@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"time"
 )
 
@@ -19,8 +21,29 @@ type Proxy struct {
 var _ http.Handler = (*Proxy)(nil)
 
 // New creates a forward proxy.
-func New() (*Proxy, error) {
+func New(baseURL string) (*Proxy, error) {
+	upstream, err := url.Parse(baseURL)
+	if err != nil {
+		return nil, fmt.Errorf("invalid upstream URL: %w", err)
+	}
+
+	// Build reverse proxy for Anthropic API
+	reverseProxyHandler := &httputil.ReverseProxy{
+		Rewrite: func(pr *httputil.ProxyRequest) {
+			pr.Out.URL.Scheme = upstream.Scheme
+			pr.Out.URL.Host = upstream.Host
+			pr.Out.Host = upstream.Host
+		},
+		// FlushInterval: -1 disables automatic periodic flushing, flushing only when the backend flushes.
+		// This eliminates buffering delays, critical for streaming responses (SSE) where clients
+		// expect immediate data as soon as the upstream API sends it.
+		FlushInterval: -1,
+	}
+
 	mux := http.NewServeMux()
+
+	// Forward proxy to Anthropic Messages API
+	mux.Handle("POST "+upstream.Path+"/messages", reverseProxyHandler)
 
 	return &Proxy{mux: mux}, nil
 }

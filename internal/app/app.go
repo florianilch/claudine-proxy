@@ -19,7 +19,7 @@ type App struct {
 
 // New creates a new App instance.
 func New() (*App, error) {
-	proxyServer, err := proxy.New()
+	proxyServer, err := proxy.New("https://api.anthropic.com/v1")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create proxy: %w", err)
 	}
