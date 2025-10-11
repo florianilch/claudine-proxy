@@ -10,6 +10,8 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"time"
+
+	"localhost/claude-proxy/internal/observability/middleware"
 )
 
 // Proxy represents the forward proxy server
@@ -47,7 +49,7 @@ func New(baseURL string) (*Proxy, error) {
 
 	// Forward proxy to Anthropic Messages API
 	mux.Handle("POST "+upstream.Path+"/messages", applyMiddlewares(reverseProxyHandler,
-		Logging(logger),
+		middleware.Logging(logger),
 		Recovery,
 	))
 

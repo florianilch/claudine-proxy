@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"localhost/claude-proxy/internal/app"
+	"localhost/claude-proxy/internal/observability"
 )
 
 func main() {
@@ -26,6 +27,9 @@ func main() {
 }
 
 func run(ctx context.Context) error {
+	// Set up observability before creating app
+	observability.Instrument()
+
 	application, err := app.New()
 	if err != nil {
 		return fmt.Errorf("failed to create app: %w", err)
