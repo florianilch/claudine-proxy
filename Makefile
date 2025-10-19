@@ -1,6 +1,8 @@
-.PHONY: all run build test test-coverage fmt lint audit clean
+.PHONY: all run build test test-coverage bench fmt lint audit clean
 
-GO := go
+# GOEXPERIMENT=jsonv2 required for encoding/json/jsontext
+# Enables streaming JSON transformation with preserved formatting.
+GO := GOEXPERIMENT=jsonv2 go
 
 BINARY_NAME := proxy
 MAIN := ./cmd/proxy
@@ -21,15 +23,18 @@ test-coverage:
 	$(GO) test -coverprofile=coverage.out ./...
 	$(GO) tool cover -html=coverage.out -o coverage.html
 
+bench:
+	$(GO) test -bench=. -benchmem ./...
+
 fmt:
 	$(GO) fmt ./...
 
 lint:
-	golangci-lint run
+	GOEXPERIMENT=jsonv2 golangci-lint run
 
 audit:
 	$(GO) vet ./...
-	$(GO) tool govulncheck ./...
+	GO tool govulncheck ./...
 
 clean:
 	rm -f $(BINARY_NAME)

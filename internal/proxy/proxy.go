@@ -1,3 +1,5 @@
+//go:build goexperiment.jsonv2
+
 package proxy
 
 import (
@@ -32,7 +34,12 @@ func New(ts oauth2.TokenSource, baseURL string) (*Proxy, error) {
 		return nil, fmt.Errorf("invalid upstream URL: %w", err)
 	}
 
-	transport := &oauth2.Transport{Source: ts}
+	// Compose transport chain (request execution order):
+	// oauth2.Transport → ImpersonationTransport
+	transport := &oauth2.Transport{
+		Source: ts,
+		Base:   &ImpersonationTransport{},
+	}
 
 	// Build reverse proxy for Anthropic API
 	reverseProxyHandler := &httputil.ReverseProxy{
