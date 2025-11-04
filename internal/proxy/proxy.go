@@ -15,7 +15,7 @@ import (
 
 	"golang.org/x/oauth2"
 
-	"localhost/claude-proxy/internal/observability/middleware"
+	"github.com/florianilch/claudine-proxy/internal/observability/middleware"
 )
 
 // Proxy represents the forward proxy server

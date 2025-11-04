@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"localhost/claude-proxy/internal/app"
-	"localhost/claude-proxy/internal/observability"
+	"github.com/florianilch/claudine-proxy/internal/app"
+	"github.com/florianilch/claudine-proxy/internal/observability"
 )
 
 func main() {

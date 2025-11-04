@@ -4,8 +4,8 @@
 # Enables streaming JSON transformation with preserved formatting.
 GO := GOEXPERIMENT=jsonv2 go
 
-BINARY_NAME := proxy
-MAIN := ./cmd/proxy
+BINARY_NAME := claudine
+MAIN := ./cmd/claudine
 
 all: test build
 

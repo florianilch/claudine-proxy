@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/oauth2"
 
-	"localhost/claude-proxy/internal/tokenstore"
+	"github.com/florianilch/claudine-proxy/internal/tokenstore"
 )
 
 // TokenSourceFactory creates an oauth2.TokenSource from a stored token string.

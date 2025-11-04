@@ -1,4 +1,4 @@
-module localhost/claude-proxy
+module github.com/florianilch/claudine-proxy
 
 go 1.25.0
 

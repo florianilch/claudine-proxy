@@ -10,9 +10,9 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/errgroup"
 
-	"localhost/claude-proxy/internal/proxy"
-	anthropictokensource "localhost/claude-proxy/internal/tokensource"
-	"localhost/claude-proxy/internal/tokenstore"
+	"github.com/florianilch/claudine-proxy/internal/proxy"
+	anthropictokensource "github.com/florianilch/claudine-proxy/internal/tokensource"
+	"github.com/florianilch/claudine-proxy/internal/tokenstore"
 )
 
 // App orchestrates the lifecycle of the proxy server and related services.
