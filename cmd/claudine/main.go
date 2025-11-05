@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/florianilch/claudine-proxy/internal/app"
-	"github.com/florianilch/claudine-proxy/internal/observability"
+	"github.com/florianilch/claudine-proxy/cmd/claudine/commands"
 )
 
 func main() {
@@ -20,27 +18,8 @@ func main() {
 	)
 	defer stop()
 
-	if err := run(ctx); err != nil {
+	if err := commands.Execute(ctx, os.Args); err != nil {
 		slog.ErrorContext(ctx, "Application failed", "error", err)
 		os.Exit(1)
 	}
-}
-
-func run(ctx context.Context) error {
-	// Set up observability before creating app
-	observability.Instrument()
-
-	application, err := app.New()
-	if err != nil {
-		return fmt.Errorf("failed to create app: %w", err)
-	}
-
-	slog.InfoContext(ctx, "starting")
-
-	if err := application.Start(ctx); err != nil {
-		return fmt.Errorf("app failed to start: %w", err)
-	}
-
-	slog.InfoContext(ctx, "stopped gracefully")
-	return nil
 }

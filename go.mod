@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/go-chi/httplog/v3 v3.2.2
+	github.com/urfave/cli/v3 v3.5.0
 	golang.org/x/oauth2 v0.31.0
 	golang.org/x/sync v0.17.0
 )
