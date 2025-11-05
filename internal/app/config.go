@@ -32,7 +32,8 @@ const (
 type AuthenticationMethod string
 
 const (
-	AuthenticationMethodOAuth AuthenticationMethod = "oauth"
+	AuthenticationMethodStatic AuthenticationMethod = "static"
+	AuthenticationMethodOAuth  AuthenticationMethod = "oauth"
 )
 
 // Default configuration values

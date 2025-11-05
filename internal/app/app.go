@@ -118,6 +118,13 @@ func newTokenSource(cfg AuthConfig) (*PersistentTokenSource, error) {
 		factory = func(token string) oauth2.TokenSource {
 			return anthropictokensource.NewTokenSource(token, anthropictokensource.Endpoint)
 		}
+	case AuthenticationMethodStatic:
+		factory = func(token string) oauth2.TokenSource {
+			return oauth2.StaticTokenSource(&oauth2.Token{
+				AccessToken: token,
+				TokenType:   "Bearer",
+			})
+		}
 	default:
 		return nil, fmt.Errorf("unsupported authentication method: %s", cfg.Method)
 	}
