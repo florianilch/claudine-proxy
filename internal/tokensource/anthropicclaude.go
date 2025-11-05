@@ -8,6 +8,9 @@ const (
 	// ClientID is the public OAuth2 client identifier for Anthropic Claude.
 	// This is a public client (no client secret) using PKCE for security.
 	ClientID = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+
+	// RedirectURL is the standard redirect URL for Anthropic Claude OAuth flows.
+	RedirectURL = "https://console.anthropic.com/oauth/code/callback"
 )
 
 // Endpoint defines the OAuth2 endpoints for Anthropic Claude authentication.

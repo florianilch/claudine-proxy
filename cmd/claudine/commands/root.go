@@ -30,6 +30,7 @@ func Execute(ctx context.Context, args []string) error {
 		},
 		Commands: []*cli.Command{
 			proxyStartCommand(),
+			authCommand(),
 		},
 	}
 

@@ -4,6 +4,20 @@
 // Anthropic's OAuth2 implementation deviates from the standard in several critical ways
 // that require custom handling:
 //   - Token exchange and refresh use JSON-encoded requests (standard OAuth2 uses form-encoding)
+//   - Token exchange requires a non-standard "state" field in the request body
+//   - Authorization codes are returned in "code#state" format requiring custom parsing
+//
+// # OAuth2 Authorization Flow
+//
+// Use Authorizer for the initial OAuth2 flow to obtain refresh tokens:
+//
+//	auth := tokensource.NewAuthorizer(tokensource.Endpoint, redirectURL)
+//	verifier := oauth2.GenerateVerifier() // Save for Exchange call
+//	authURL := auth.AuthCodeURL(verifier)
+//	// After user authorizes, Anthropic redirects with "code#state" format
+//	codeWithState := "auth_code_xyz#state_value" // Extract from redirect
+//	token, err := auth.Exchange(ctx, codeWithState, verifier)
+//	// Save token.RefreshToken for future use
 //
 // # Token Sources
 //
