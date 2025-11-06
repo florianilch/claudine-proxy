@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+
+version: 2
+
+project_name: claudine
+
+before:
+  hooks:
+    # makes working tree dirty if something is off
+    - go mod tidy
+
+builds:
+  - main: ./cmd/claudine
+    env:
+      - CGO_ENABLED=0
+      - GOEXPERIMENT=jsonv2
+    goos:
+      - linux
+      - windows
+      - darwin
+    flags:
+      - -trimpath
+      - -buildvcs=false
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}} -X main.commit={{.ShortCommit}}
+    tags:
+      - prod
+
+checksum:
+  name_template: checksums.txt
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+changelog:
+  disable: true

@@ -10,6 +10,11 @@ import (
 	"github.com/florianilch/claudine-proxy/cmd/claudine/commands"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+)
+
 func main() {
 	// Enable graceful shutdown via OS signals; context cancellation propagates to all commands.
 	ctx, stop := signal.NotifyContext(context.Background(),
@@ -18,7 +23,7 @@ func main() {
 	)
 	defer stop()
 
-	if err := commands.Execute(ctx, os.Args); err != nil {
+	if err := commands.Execute(ctx, os.Args, version, commit); err != nil {
 		slog.ErrorContext(ctx, "Application failed", "error", err)
 		os.Exit(1)
 	}

@@ -1,0 +1,6 @@
+{
+  "id": "goreleaser",
+  "version": "0.0.0",
+  "name": "GoReleaser",
+  "installsAfter": ["ghcr.io/devcontainers/features/go"]
+}

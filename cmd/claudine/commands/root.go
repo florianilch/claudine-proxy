@@ -12,10 +12,15 @@ import (
 )
 
 // Execute runs the root command with the given context and arguments.
-func Execute(ctx context.Context, args []string) error {
+func Execute(ctx context.Context, args []string, version, commit string) error {
+	cli.VersionPrinter = func(cmd *cli.Command) {
+		_, _ = fmt.Fprintf(cmd.Root().Writer, "%s version %s, build %s\n", cmd.Name, cmd.Version, commit)
+	}
+
 	cmd := &cli.Command{
-		Name:  "claudine",
-		Usage: "Anthropic OAuth Ambassador",
+		Name:    "claudine",
+		Usage:   "Anthropic OAuth Ambassador",
+		Version: version,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "config",

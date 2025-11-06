@@ -7,6 +7,9 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "latest"
+    },
+    "./features/goreleaser": {
+      "version": "2.12.7"
     }
   },
 

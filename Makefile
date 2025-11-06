@@ -1,4 +1,4 @@
-.PHONY: all run build test test-coverage bench fmt lint audit changelog clean
+.PHONY: all run build test test-coverage bench fmt lint audit snapshot release-calc changelog changelog-latest clean
 
 # GOEXPERIMENT=jsonv2 required for encoding/json/jsontext
 # Enables streaming JSON transformation with preserved formatting.
@@ -8,6 +8,9 @@ GIT_CLIFF_BIN := bunx git-cliff@2.10.1 -c cliff.config.toml
 
 BINARY_NAME := claudine
 MAIN := ./cmd/claudine
+
+# Calculated next version
+BUMPED_VERSION = $(shell $(GIT_CLIFF_BIN) --bumped-version)
 
 all: test build
 
@@ -38,9 +41,23 @@ audit:
 	$(GO) vet ./...
 	go tool govulncheck ./...
 
+# Build for all platforms using GoReleaser (local testing)
+snapshot:
+	goreleaser build --snapshot --clean
+
+# Simulate full release with GoReleaser (includes archives, checksums)
+release-dry:
+	goreleaser release --snapshot --clean
+
+# Write full changelog
 changelog:
 	$(GIT_CLIFF_BIN) --output CHANGELOG.md
+
+# Generate changelog for latest tag (current or most recent)
+changelog-latest:
+	$(GIT_CLIFF_BIN) --strip all --latest
 
 clean:
 	rm -f $(BINARY_NAME)
 	rm -f coverage.out coverage.html
+	rm -rf ./dist/
