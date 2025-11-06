@@ -4,6 +4,12 @@
   // https://github.com/devcontainers/images/tree/main/src/go
   "image": "mcr.microsoft.com/devcontainers/go:2-1.25-bookworm",
 
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest"
+    }
+  },
+
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
@@ -14,7 +20,7 @@
     }
   },
 
-  "postCreateCommand": "sudo chown -R vscode /go",
+  "postCreateCommand": "npm install -g bun@1.3.1 && sudo chown -R vscode /go",
 
   "remoteUser": "vscode",
 
