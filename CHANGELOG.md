@@ -1,4 +1,4 @@
-## Unreleased
+## 0.1.0 - 2025-11-06
 ### <!-- 0 -->Features
 - Add static token source to allow managing token rotation outside of app
 - Add OAuth authorization code flow with PKCE
