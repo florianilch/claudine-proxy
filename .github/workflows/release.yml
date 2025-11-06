@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: [v*]
+
+# Automatically cancel older in-progress jobs on the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+
+    timeout-minutes: 60
+    permissions:
+      contents: write # needed to write releases
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Install git-cliff
+        run: |
+          version="2.10.1"
+          wget "https://github.com/orhun/git-cliff/releases/download/v${version}/git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xvzf git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz
+          sudo mv git-cliff-${version}/git-cliff /usr/local/bin/
+          git-cliff --version
+
+      - name: Generate release notes
+        run: git-cliff -v -c cliff.config.toml --strip all --output release-notes.md --current
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: '~> v2'
+          args: release --clean --release-notes release-notes.md

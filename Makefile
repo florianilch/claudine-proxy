@@ -1,4 +1,4 @@
-.PHONY: all run build test test-coverage bench fmt lint audit snapshot release-calc changelog changelog-latest clean
+.PHONY: all run build test test-coverage bench fmt lint audit snapshot release-calc release-prepare release-dry changelog changelog-latest clean
 
 # GOEXPERIMENT=jsonv2 required for encoding/json/jsontext
 # Enables streaming JSON transformation with preserved formatting.
@@ -44,6 +44,31 @@ audit:
 # Build for all platforms using GoReleaser (local testing)
 snapshot:
 	goreleaser build --snapshot --clean
+
+# Calculate the next version based on unreleased changes
+release-calc:
+	@echo $(BUMPED_VERSION)
+
+release-prepare:
+	$(eval VERSION ?= $(BUMPED_VERSION))
+	$(if $(strip $(VERSION)),,$(error VERSION cannot be empty))
+	$(if $(findstring '",$(VERSION)),$(error VERSION cannot contain quotes))
+
+	$(eval GIT_STATUS := $(shell git diff --quiet || echo dirty))
+	$(if $(GIT_STATUS),$(error working directory needs to be clean))
+
+	@echo "Preparing $(VERSION)..."
+
+	@$(GIT_CLIFF_BIN) --output CHANGELOG.md --tag "$(VERSION)"
+
+	@git diff --quiet CHANGELOG.md || \
+		{ git add CHANGELOG.md && \
+			git commit -m "chore(release): prepare for $(VERSION)" CHANGELOG.md; }
+
+	git tag -a "$(VERSION)" -m "Release $(VERSION)"
+
+	@echo "Done! Tagged $(VERSION)"
+	@echo "Now push the commit (git push) and the tag (git push --tags)."
 
 # Simulate full release with GoReleaser (includes archives, checksums)
 release-dry:
