@@ -1,0 +1,52 @@
+name: Update Changelog
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'CHANGELOG.md'
+
+# Automatically cancel older in-progress jobs on the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  update-changelog:
+    name: Update changelog
+    runs-on: ubuntu-24.04
+
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install git-cliff
+        run: |
+          version="2.10.1"
+          wget "https://github.com/orhun/git-cliff/releases/download/v${version}/git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xvzf git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz
+          sudo mv git-cliff-${version}/git-cliff /usr/local/bin/
+          git-cliff --version
+
+      - name: Generate changelog
+        run: |
+          git-cliff -v -c cliff.config.toml --output CHANGELOG.md
+
+          if git diff --quiet CHANGELOG.md; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "chore(release): update changelog"
+          git push
