@@ -11,3 +11,7 @@
 - Register reverse proxy handler for `messages` endpoint
 - Setup basic app and service structure
 
+### <!-- 1 -->Fixes
+- Bump Go version to fix multiple DoS and resource exhaustion vulnerabilities
+- Fixes host header injection which leads to open redirect
+
