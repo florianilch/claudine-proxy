@@ -41,6 +41,8 @@ jobs:
         run: git-cliff -v -c cliff.config.toml --strip all --output release-notes.md --current
 
       - name: Run GoReleaser
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: goreleaser/goreleaser-action@v6
         with:
           version: '~> v2'
