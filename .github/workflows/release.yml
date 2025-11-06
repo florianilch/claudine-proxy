@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Go
         uses: actions/setup-go@v6
@@ -35,10 +37,14 @@ jobs:
           wget "https://github.com/orhun/git-cliff/releases/download/v${version}/git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz"
           tar -xvzf git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz
           sudo mv git-cliff-${version}/git-cliff /usr/local/bin/
+          rm git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz
+          rm -rf git-cliff-${version}/
           git-cliff --version
 
       - name: Generate release notes
-        run: git-cliff -v -c cliff.config.toml --strip all --output release-notes.md --current
+        run: |
+          git-cliff -v -c cliff.config.toml --strip all --output ${{ runner.temp }}/release-notes.md --current
+          cat ${{ runner.temp }}/release-notes.md
 
       - name: Run GoReleaser
         env:
@@ -46,4 +52,4 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           version: '~> v2'
-          args: release --clean --release-notes release-notes.md
+          args: release --clean --release-notes ${{ runner.temp }}/release-notes.md
