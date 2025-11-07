@@ -30,10 +30,11 @@ jobs:
 
       - name: Install git-cliff
         run: |
-          version="2.10.1"
-          wget "https://github.com/orhun/git-cliff/releases/download/v${version}/git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz"
-          tar -xvzf git-cliff-${version}-x86_64-unknown-linux-gnu.tar.gz
-          sudo mv git-cliff-${version}/git-cliff /usr/local/bin/
+          VERSION="2.10.1"
+          cd "${RUNNER_TEMP}"
+          wget "https://github.com/orhun/git-cliff/releases/download/v${VERSION}/git-cliff-${VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xvzf git-cliff-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+          sudo mv git-cliff-${VERSION}/git-cliff /usr/local/bin/
           git-cliff --version
 
       - name: Generate changelog
