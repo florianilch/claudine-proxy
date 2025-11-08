@@ -132,8 +132,8 @@ Claudine securely handles your auth details.
 
 | Storage   | Use Case                               |
 |-----------|----------------------------------------|
-| `keyring` | Securely uses the OS keychain (macOS Keychain, Windows Credential Manager, etc.). |
-| `file`    | **Default** Plain-text file. Good for systems without a native keychain. |
+| `keyring` | **Default & Recommended.** Securely uses the OS keychain (macOS Keychain, Windows Credential Manager, etc.). |
+| `file`    | Plain-text file. Good for systems without a native keychain. |
 | `env`     | Reads from an env var. Escape hatch for ephemeral environments like CI/CD – won't auto-refresh. |
 
 ## Requirements
