@@ -44,7 +44,7 @@ const (
 	DefaultConfigServerHost      = "127.0.0.1"
 	DefaultConfigServerPort      = 4000
 	DefaultConfigShutdownTimeout = 5 * time.Second
-	DefaultConfigAuthStorage     = TokenStorageTypeFile
+	DefaultConfigAuthStorage     = TokenStorageTypeKeyring
 	DefaultConfigAuthMethod      = AuthenticationMethodOAuth
 	DefaultConfigUpstreamBaseURL = "https://api.anthropic.com/v1"
 )
