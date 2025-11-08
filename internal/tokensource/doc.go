@@ -1,10 +1,9 @@
 // Package tokensource provides OAuth2 token acquisition and automatic refresh
 // for Anthropic Claude API.
 //
-// Anthropic's OAuth2 implementation deviates from the standard in several critical ways
-// that require custom handling:
-//   - Token exchange and refresh use JSON-encoded requests (standard OAuth2 uses form-encoding)
-//   - Token exchange requires a non-standard "state" field in the request body
+// Anthropic's OAuth2 implementation require custom handling in a few ways:
+//   - Token exchange and refresh use JSON-encoded requests (OAuth2 typically uses form-encoding)
+//   - Token exchange requires a "state" field in the request body
 //   - Authorization codes are returned in "code#state" format requiring custom parsing
 //
 // # OAuth2 Authorization Flow
@@ -28,11 +27,12 @@
 //
 // # Custom Base Transport
 //
-// Configure a custom base transport for token refresh requests (e.g., for proxies or custom timeouts):
+// Configure a custom base transport for token refresh requests (e.g., for
+// proxies or custom timeouts):
 //
 //	ts := tokensource.NewTokenSource(
-//		refreshToken,
-//		tokensource.Endpoint,
-//		tokensource.WithTransport(customTransport),
+//	  refreshToken,
+//	  tokensource.Endpoint,
+//	  tokensource.WithTransport(customTransport),
 //	)
 package tokensource

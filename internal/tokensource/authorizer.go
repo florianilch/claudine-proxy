@@ -13,9 +13,9 @@ import (
 	"golang.org/x/oauth2"
 )
 
-// Authorizer handles the OAuth2 authorization flow for Anthropic Claude.
-// It uses manual HTTP requests for token exchange because Anthropic requires
-// a non-standard 'state' field in the token endpoint request body.
+// Authorizer handles the OAuth2 authorization flow for Anthropic Claude. It
+// uses manual HTTP requests for token exchange because Anthropic requires
+// "state" field in the token endpoint request body.
 type Authorizer struct {
 	config *oauth2.Config
 	client *http.Client
@@ -51,10 +51,10 @@ func (a *Authorizer) AuthCodeURL(state string, opts ...oauth2.AuthCodeOption) st
 	return a.config.AuthCodeURL(state, allOpts...)
 }
 
-// Exchange completes the OAuth2 flow by exchanging an authorization code for tokens.
-// Handles Anthropic's non-standard "code#state" response format and includes the state
-// field in the token request body (required by Anthropic but not standard OAuth2).
-// Verifier must be the same value passed as state to AuthCodeURL.
+// Exchange completes the OAuth2 flow by exchanging an authorization code for
+// tokens. Handles Anthropic's "code#state" response format and includes the
+// state field in the token request body (required by Anthropic but not standard
+// OAuth2). Verifier must be the same value passed as state to AuthCodeURL.
 func (a *Authorizer) Exchange(ctx context.Context, codeWithState string, verifier string) (*oauth2.Token, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -117,8 +117,8 @@ func (a *Authorizer) Exchange(ctx context.Context, codeWithState string, verifie
 	return &token, nil
 }
 
-// exchangeRequest represents the token exchange request body.
-// Includes the non-standard State field required by Anthropic's token endpoint.
+// exchangeRequest represents the token exchange request body. Includes the
+// state field required by Anthropic's token endpoint.
 type exchangeRequest struct {
 	Code         string `json:"code"`
 	State        string `json:"state"`
