@@ -35,5 +35,35 @@ archives:
       - goos: windows
         formats: [zip]
 
+homebrew_casks:
+  - name: claudine
+    description: Unlock your Claude Pro/Max subscription in any tool or library.
+    homepage: "https://github.com/florianilch/claudine-proxy"
+
+    skip_upload: true
+
+    binaries:
+      - claudine
+
+    repository:
+      name: homebrew-tap
+
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/claudine"]
+          end
+
+    uninstall:
+      trash:
+        - "~/.config/claudine-proxy/auth"
+        - "~/Library/ApplicationSupport/claudine-proxy/auth"
+
+    zap:
+      trash:
+        - "~/.config/claudine-proxy"
+        - "~/Library/ApplicationSupport/claudine-proxy"
+
 changelog:
   disable: true

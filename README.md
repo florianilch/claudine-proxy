@@ -12,7 +12,13 @@ Unlock your Claude Pro/Max subscription in any tool or library.
 
 **1. Install**
 
-Grab a pre-built binary for **Windows**, **macOS** or **Linux** from [Releases](https://github.com/florianilch/claudine-proxy/releases/latest).
+Via Homebrew (recommended for **macOS**):
+
+```bash
+brew install --cask florianilch/tap/claudine
+```
+
+For direct control, grab the [latest release](https://github.com/florianilch/claudine-proxy/releases/latest) for **Windows**, **Linux** or **macOS** and move it into your `PATH`.
 
 <a href="https://github.com/florianilch/claudine-proxy/releases/latest"><img src="https://img.shields.io/github/v/release/florianilch/claudine-proxy?style=flat&logo=GitHub"></a>
 
