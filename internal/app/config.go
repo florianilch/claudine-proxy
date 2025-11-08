@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"os/user"
 	"path/filepath"
 	"time"
 
@@ -24,8 +25,9 @@ const (
 type TokenStorageType string
 
 const (
-	TokenStorageTypeFile TokenStorageType = "file"
-	TokenStorageTypeEnv  TokenStorageType = "env"
+	TokenStorageTypeFile    TokenStorageType = "file"
+	TokenStorageTypeEnv     TokenStorageType = "env"
+	TokenStorageTypeKeyring TokenStorageType = "keyring"
 )
 
 // AuthenticationMethod represents the different authentication methods supported.
@@ -71,8 +73,9 @@ type AuthConfig struct {
 	Storage TokenStorageType `json:"storage" validate:"required,oneof=file env keyring"`
 
 	// Storage-specific settings (mutually exclusive based on Storage type)
-	File   string `json:"file,omitempty"`    // For file storage: path to token file
-	EnvKey string `json:"env_key,omitempty"` // For env storage: environment variable name
+	File        string `json:"file,omitempty"`         // For file storage: path to token file
+	EnvKey      string `json:"env_key,omitempty"`      // For env storage: environment variable name
+	KeyringUser string `json:"keyring_user,omitempty"` // For keyring storage: user identifier
 
 	// Authentication method - how to convert stored_token to access_token
 	Method AuthenticationMethod `json:"method" validate:"required,oneof=oauth static"`
@@ -85,6 +88,8 @@ func (a *AuthConfig) NewTokenStore() (tokenstore.TokenStore, error) {
 		return tokenstore.NewFileStore(a.File)
 	case TokenStorageTypeEnv:
 		return tokenstore.NewEnvStore(a.EnvKey)
+	case TokenStorageTypeKeyring:
+		return tokenstore.NewKeyringStore("claudine-proxy-token", a.KeyringUser)
 	default:
 		return nil, fmt.Errorf("unsupported storage type: %s", a.Storage)
 	}
@@ -144,6 +149,14 @@ func (c *Config) ApplyDefaults() error {
 			}
 			c.Auth.File = filepath.Join(configDir, "claudine-proxy", "auth")
 		}
+	case TokenStorageTypeKeyring:
+		if c.Auth.KeyringUser == "" {
+			currentUser, err := user.Current()
+			if err != nil {
+				return fmt.Errorf("auth.keyring_user required (auto-detect failed: %w)", err)
+			}
+			c.Auth.KeyringUser = currentUser.Username
+		}
 	case TokenStorageTypeEnv:
 		// env_key must be explicitly configured (no sensible default)
 	}
@@ -170,6 +183,10 @@ func (c *Config) Validate() error {
 	case TokenStorageTypeEnv:
 		if c.Auth.EnvKey == "" {
 			return errors.New("env_key required for env storage")
+		}
+	case TokenStorageTypeKeyring:
+		if c.Auth.KeyringUser == "" {
+			return errors.New("keyring_user required for keyring storage")
 		}
 	}
 

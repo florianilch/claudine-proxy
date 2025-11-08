@@ -93,8 +93,9 @@ Run `claudine --help` for all available options.
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `CLAUDINE_SHUTDOWN__TIMEOUT` | Graceful shutdown timeout | `10s` |
-| `CLAUDINE_AUTH__STORAGE` | Token storage (`file`, `env`) | `file` |
+| `CLAUDINE_AUTH__STORAGE` | Token storage (`keyring`, `file`, `env`) | `keyring` |
 | `CLAUDINE_AUTH__FILE` | Path for `file` storage | *Platform-dependent \** |
+| `CLAUDINE_AUTH__KEYRING_USER` | Identifier for `keyring` storage | Current OS username |
 | `CLAUDINE_AUTH__ENV_KEY` | Env var for `env` storage |  |
 | `CLAUDINE_AUTH__METHOD` | Auth method (`oauth` or `static`) | `oauth` |
 | `CLAUDINE_UPSTREAM__BASE_URL` | Upstream API base URL | `https://api.anthropic.com/v1` |
@@ -131,6 +132,7 @@ Claudine securely handles your auth details.
 
 | Storage   | Use Case                               |
 |-----------|----------------------------------------|
+| `keyring` | Securely uses the OS keychain (macOS Keychain, Windows Credential Manager, etc.). |
 | `file`    | **Default** Plain-text file. Good for systems without a native keychain. |
 | `env`     | Reads from an env var. Escape hatch for ephemeral environments like CI/CD – won't auto-refresh. |
 
