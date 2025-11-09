@@ -1,0 +1,9 @@
+openapi: 3.0.0
+info:
+  title: Generic OpenAI Client Adapter
+  version: 0.0.0
+tags:
+  - name: Chat
+paths:
+  /chat/completions:
+    $ref: paths/chat_completions.yaml

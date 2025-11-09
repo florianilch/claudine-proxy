@@ -1,0 +1,21 @@
+post:
+  operationId: createChatCompletion
+  summary: Create chat completion
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateChatCompletionRequest.yaml
+  responses:
+    '200':
+      description: The request has succeeded.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/CreateChatCompletionResponse.yaml
+        text/event-stream:
+          schema:
+            $ref: ../components/schemas/CreateChatCompletionStreamResponse.yaml
+  tags:
+    - Chat

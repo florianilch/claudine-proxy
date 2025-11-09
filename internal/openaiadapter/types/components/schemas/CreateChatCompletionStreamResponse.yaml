@@ -1,0 +1,30 @@
+properties:
+  id:
+    type: string
+  choices:
+    type: array
+    items:
+      $ref: CreateChatCompletionStreamResponseChoice.yaml
+  created:
+    type: integer
+  model:
+    type: string
+  service_tier:
+    $ref: ../../openai/openai.yaml#/components/schemas/ServiceTier
+  system_fingerprint:
+    type: string
+    deprecated: true
+  object:
+    type: string
+    enum:
+      - chat.completion.chunk
+    x-stainless-const: true
+  usage:
+    $ref: ../../openai/openai.yaml#/components/schemas/CompletionUsage
+    nullable: true
+required:
+  - choices
+  - created
+  - id
+  - model
+  - object

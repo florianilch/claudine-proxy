@@ -1,0 +1,18 @@
+description: >-
+  Specifies a tool the model should use. Use to force the model to call a specific custom tool.
+properties:
+  type:
+    type: string
+    enum:
+      - custom
+  custom:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of the custom tool to call.
+    required:
+      - name
+required:
+  - type
+  - custom

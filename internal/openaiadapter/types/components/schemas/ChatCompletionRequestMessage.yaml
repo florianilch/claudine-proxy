@@ -1,0 +1,16 @@
+anyOf:
+  - $ref: ChatCompletionRequestDeveloperMessage.yaml
+  - $ref: ChatCompletionRequestSystemMessage.yaml
+  - $ref: ChatCompletionRequestUserMessage.yaml
+  - $ref: ChatCompletionRequestAssistantMessage.yaml
+  - $ref: ChatCompletionRequestToolMessage.yaml
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestFunctionMessage
+discriminator:
+  propertyName: role
+  mapping:
+    developer: ChatCompletionRequestDeveloperMessage.yaml
+    system: ChatCompletionRequestSystemMessage.yaml
+    user: ChatCompletionRequestUserMessage.yaml
+    assistant: ChatCompletionRequestAssistantMessage.yaml
+    tool: ChatCompletionRequestToolMessage.yaml
+    function: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestFunctionMessage

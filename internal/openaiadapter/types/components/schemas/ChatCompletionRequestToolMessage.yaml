@@ -1,0 +1,18 @@
+properties:
+  role:
+    type: string
+    enum:
+      - tool
+  content:
+    oneOf:
+      - type: string
+      - type: array
+        items:
+          $ref: ChatCompletionRequestToolMessageContentPart.yaml
+        minItems: 1
+  tool_call_id:
+    type: string
+required:
+  - role
+  - content
+  - tool_call_id
