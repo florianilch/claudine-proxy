@@ -4,11 +4,13 @@ Unlock your Claude Pro/Max subscription in any tool or library.
 
 **Claudine** is a lightweight, session-free OAuth ambassador for Claude. It can be deployed as a local sidecar or as a shared service for development.
 
-**Resilient Authentication:** Handles OAuth2 flow and token refresh, ensuring connections are long-lived and stable.
+✅ **OpenAI Compatibility:** A drop-in, OpenAI-compatible endpoint for `v1/chat/completions` makes integration with existing **OpenAI SDK** and tools like **Jan.ai** or **Raycast** zero-effort.
 
-**Privacy by Design:** Designed as a pass-through proxy; never logs credentials or request/response bodies.
+✅ **Resilient Authentication:** Handles OAuth2 flow and token refresh, ensuring connections are long-lived and stable.
 
-## Quick Start
+✅ **Privacy by Design:** Designed as a pass-through proxy; never logs credentials or request/response bodies.
+
+## 🚀 60-Second Quick Start
 
 **1. Install**
 
@@ -63,6 +65,91 @@ curl http://localhost:4000/v1/messages \
 - Point `base_url` to `http://localhost:4000`
 - Set `api_key` to any value (proxy handles auth)
 - See [Anthropic Python SDK](https://github.com/anthropics/anthropic-sdk-python) or [TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript)
+
+### OpenAI API Compatibility
+
+For most tools, this is all you need.
+
+```bash
+curl http://localhost:4000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer claudine" \
+  -d '{
+    "model": "claude-sonnet-4-0",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
+
+**For SDK usage:**
+- Point `base_url` to `http://localhost:4000/v1`
+- Set `api_key` to any value (proxy handles auth)
+- See [OpenAI Python SDK](https://github.com/openai/openai-python) or [Node.js SDK](https://github.com/openai/openai-node)
+
+## Supported Tools & Editors
+
+Any tool that supports BYOM (Bring Your Own Models) with OpenAI-compatible endpoints works with Claudine. Here are a few popular examples:
+
+### [Jan.ai](https://www.jan.ai/)
+
+In Settings, add a new Model Provider pointing to `http://localhost:4000/v1` and add the models you need.
+
+![Jan 1](assets/jan_1.png)
+![Jan 2](assets/jan_2.png)
+
+### [Raycast](https://www.raycast.com/)
+
+Enable Custom AI providers and add Claudine to your list of custom providers.
+
+<details>
+<summary>example configuration (`providers.yaml`)</summary>
+
+```yaml
+# ~/.config/raycast/ai/providers.yaml on macOS
+providers:
+  # ...
+  - id: claudine
+    name: Claudine
+    base_url: http://localhost:4000/v1
+    models:
+      - id: claude-sonnet-4-5
+        name: "Claude Sonnet 4.5"
+        context: 205400
+        abilities:
+          temperature:
+            supported: true
+          vision:
+            supported: true
+          system_message:
+            supported: true
+          tools:
+            supported: true
+          reasoning_effort:
+            supported: true
+      # ...
+```
+
+</details>
+<br />
+
+![Raycast 1](assets/raycast_1.png)
+
+![Raycast 2](assets/raycast_2.png)
+
+![Raycast 3](assets/raycast_3.png)
+
+#### Most IDEs
+
+```jsonc
+// Example for Cursor
+{
+  "models": [{
+    "model": "claude-sonnet-4-0",
+    "apiBase": "http://localhost:4000/v1",
+    "apiKey": "claudine"
+    // ...
+  }]
+}
+```
 
 ## Configuration
 
