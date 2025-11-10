@@ -1,0 +1,6 @@
+anyOf:
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartText
+discriminator:
+  propertyName: type
+  mapping:
+    text: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartText

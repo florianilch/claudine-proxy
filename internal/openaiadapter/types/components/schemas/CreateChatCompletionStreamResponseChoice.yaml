@@ -1,0 +1,35 @@
+properties:
+  delta:
+    $ref: ChatCompletionStreamResponseDelta.yaml
+  logprobs:
+    type: object
+    nullable: true
+    properties:
+      content:
+        type: array
+        items:
+          $ref: '../../openai/openai.yaml#/components/schemas/ChatCompletionTokenLogprob'
+        nullable: true
+      refusal:
+        type: array
+        items:
+          $ref: '../../openai/openai.yaml#/components/schemas/ChatCompletionTokenLogprob'
+        nullable: true
+    required:
+      - content
+      - refusal
+  finish_reason:
+    type: string
+    enum:
+      - stop
+      - length
+      - tool_calls
+      - content_filter
+      - function_call
+    nullable: true
+  index:
+    type: integer
+required:
+  - delta
+  - finish_reason
+  - index

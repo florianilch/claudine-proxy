@@ -1,0 +1,821 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather like in Paris?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01abc",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Paris\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}",
+          "tool_call_id": "toolu_01abc"
+        },
+        {
+          "role": "assistant",
+          "content": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+        },
+        {
+          "role": "user",
+          "content": "Now compare the weather in London and Berlin"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather like in Paris?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01abc",
+              "name": "get_weather",
+              "input": {
+                "location": "Paris",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01abc",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Now compare the weather in London and Berlin"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01tool003",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_02def",
+          "name": "get_weather",
+          "input": {
+            "location": "London",
+            "unit": "celsius"
+          }
+        },
+        {
+          "type": "tool_use",
+          "id": "toolu_03ghi",
+          "name": "get_weather",
+          "input": {
+            "location": "Berlin",
+            "unit": "celsius"
+          }
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 250,
+        "output_tokens": 60,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01tool003",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": null,
+            "refusal": null,
+            "tool_calls": [
+              {
+                "id": "toolu_02def",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"London\",\"unit\":\"celsius\"}"
+                }
+              },
+              {
+                "id": "toolu_03ghi",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"Berlin\",\"unit\":\"celsius\"}"
+                }
+              }
+            ]
+          },
+          "finish_reason": "tool_calls",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 250,
+        "completion_tokens": 60,
+        "total_tokens": 310
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather like in Paris?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01abc",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Paris\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}",
+          "tool_call_id": "toolu_01abc"
+        },
+        {
+          "role": "assistant",
+          "content": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+        },
+        {
+          "role": "user",
+          "content": "Now compare the weather in London and Berlin"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_02def",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"London\",\"unit\":\"celsius\"}"
+              }
+            },
+            {
+              "id": "toolu_03ghi",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Berlin\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 18, \"condition\":\"cloudy\",\"humidity\": 70}",
+          "tool_call_id": "toolu_02def"
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 20, \"condition\":\"partly cloudy\",\"humidity\": 55}",
+          "tool_call_id": "toolu_03ghi"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather like in Paris?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01abc",
+              "name": "get_weather",
+              "input": {
+                "location": "Paris",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01abc",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Now compare the weather in London and Berlin"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_02def",
+              "name": "get_weather",
+              "input": {
+                "location": "London",
+                "unit": "celsius"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_03ghi",
+              "name": "get_weather",
+              "input": {
+                "location": "Berlin",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_02def",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 18, \"condition\":\"cloudy\",\"humidity\": 70}"
+                }
+              ],
+              "is_error": false
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_03ghi",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 20, \"condition\":\"partly cloudy\",\"humidity\": 55}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01tool004",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's a comparison of the weather in London and Berlin:\n\n**London:**\n- Temperature: 18°C\n- Condition: Cloudy\n- Humidity: 70%\n\n**Berlin:**\n- Temperature: 20°C\n- Condition: Partly cloudy\n- Humidity: 55%\n\nBerlin is slightly warmer at 20°C compared to London's 18°C. While both cities have some cloud cover, Berlin has better conditions with partly cloudy skies versus London's fully cloudy weather. London also has higher humidity at 70% compared to Berlin's more comfortable 55%."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 380,
+        "output_tokens": 125,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01tool004",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Here's a comparison of the weather in London and Berlin:\n\n**London:**\n- Temperature: 18°C\n- Condition: Cloudy\n- Humidity: 70%\n\n**Berlin:**\n- Temperature: 20°C\n- Condition: Partly cloudy\n- Humidity: 55%\n\nBerlin is slightly warmer at 20°C compared to London's 18°C. While both cities have some cloud cover, Berlin has better conditions with partly cloudy skies versus London's fully cloudy weather. London also has higher humidity at 70% compared to Berlin's more comfortable 55%.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 380,
+        "completion_tokens": 125,
+        "total_tokens": 505
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather like in Paris?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01abc",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Paris\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}",
+          "tool_call_id": "toolu_01abc"
+        },
+        {
+          "role": "assistant",
+          "content": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+        },
+        {
+          "role": "user",
+          "content": "Now compare the weather in London and Berlin"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_02def",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"London\",\"unit\":\"celsius\"}"
+              }
+            },
+            {
+              "id": "toolu_03ghi",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Berlin\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 18, \"condition\":\"cloudy\",\"humidity\": 70}",
+          "tool_call_id": "toolu_02def"
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 20, \"condition\":\"partly cloudy\",\"humidity\": 55}",
+          "tool_call_id": "toolu_03ghi"
+        },
+        {
+          "role": "assistant",
+          "content": "Here's a comparison of the weather in London and Berlin:\n\n**London:**\n- Temperature: 18°C\n- Condition: Cloudy\n- Humidity: 70%\n\n**Berlin:**\n- Temperature: 20°C\n- Condition: Partly cloudy\n- Humidity: 55%\n\nBerlin is slightly warmer at 20°C compared to London's 18°C. While both cities have some cloud cover, Berlin has better conditions with partly cloudy skies versus London's fully cloudy weather. London also has higher humidity at 70% compared to Berlin's more comfortable 55%."
+        },
+        {
+          "role": "user",
+          "content": "Thanks!"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather like in Paris?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01abc",
+              "name": "get_weather",
+              "input": {
+                "location": "Paris",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01abc",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Now compare the weather in London and Berlin"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_02def",
+              "name": "get_weather",
+              "input": {
+                "location": "London",
+                "unit": "celsius"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_03ghi",
+              "name": "get_weather",
+              "input": {
+                "location": "Berlin",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_02def",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 18, \"condition\":\"cloudy\",\"humidity\": 70}"
+                }
+              ],
+              "is_error": false
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_03ghi",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 20, \"condition\":\"partly cloudy\",\"humidity\": 55}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here's a comparison of the weather in London and Berlin:\n\n**London:**\n- Temperature: 18°C\n- Condition: Cloudy\n- Humidity: 70%\n\n**Berlin:**\n- Temperature: 20°C\n- Condition: Partly cloudy\n- Humidity: 55%\n\nBerlin is slightly warmer at 20°C compared to London's 18°C. While both cities have some cloud cover, Berlin has better conditions with partly cloudy skies versus London's fully cloudy weather. London also has higher humidity at 70% compared to Berlin's more comfortable 55%."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Thanks!"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01tool005",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "You're welcome! Happy to help with the weather information."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 520,
+        "output_tokens": 15,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01tool005",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "You're welcome! Happy to help with the weather information.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 520,
+        "completion_tokens": 15,
+        "total_tokens": 535
+      }
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Count from 1 to 100"}
+      ],
+      "max_completion_tokens": 20
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Count from 1 to 100"}]}
+      ],
+      "max_tokens": 20
+    },
+    "anthropicResponse": {
+      "id": "msg_01maxtoken001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "max_tokens",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 15,
+        "output_tokens": 20,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01maxtoken001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10",
+            "refusal": null
+          },
+          "finish_reason": "length",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 15,
+        "completion_tokens": 20,
+        "total_tokens": 35
+      }
+    }
+  }
+]

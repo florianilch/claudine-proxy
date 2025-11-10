@@ -1,0 +1,26 @@
+properties:
+  type:
+    type: string
+    enum:
+      - custom
+  custom:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      format:
+        anyOf:
+          - $ref: CustomToolChatCompletionsTextFormat.yaml
+          - $ref: CustomToolChatCompletionsGrammarFormat.yaml
+        discriminator:
+          propertyName: type
+          mapping:
+            text: CustomToolChatCompletionsTextFormat.yaml
+            grammar: CustomToolChatCompletionsGrammarFormat.yaml
+    required:
+      - name
+required:
+  - type
+  - custom

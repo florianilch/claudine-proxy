@@ -1,0 +1,35 @@
+properties:
+  finish_reason:
+    type: string
+    enum:
+      - stop
+      - length
+      - tool_calls
+      - content_filter
+      - function_call
+  index:
+    type: integer
+  message:
+    $ref: ChatCompletionResponseMessage.yaml
+  logprobs:
+    type: object
+    nullable: true
+    properties:
+      content:
+        type: array
+        items:
+          $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionTokenLogprob
+        nullable: true
+      refusal:
+        type: array
+        items:
+          $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionTokenLogprob
+        nullable: true
+    required:
+      - content
+      - refusal
+required:
+  - finish_reason
+  - index
+  - message
+  - logprobs

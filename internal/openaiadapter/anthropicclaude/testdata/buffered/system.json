@@ -1,0 +1,132 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "system", "content": "You are a helpful assistant that provides concise answers."},
+        {"role": "developer", "content": "Always remind users to verify important information."},
+        {"role": "user", "content": "What is the speed of light?"}
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "system": [
+        {"type": "text", "text": "You are a helpful assistant that provides concise answers."},
+        {"type": "text", "text": "Always remind users to verify important information."}
+      ],
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "What is the speed of light?"}]}
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01sys001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {"type": "text", "text": "299,792,458 m/s. Verify for your use case."}
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 45,
+        "output_tokens": 42,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01sys001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "299,792,458 m/s. Verify for your use case.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 45,
+        "completion_tokens": 42,
+        "total_tokens": 87
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "system", "content": "You are a helpful assistant that provides concise answers."},
+        {"role": "developer", "content": "Always remind users to verify important information."},
+        {"role": "user", "content": "What is the speed of light?"},
+         {"role": "assistant", "content": "299,792,458 m/s. Verify for your use case."},
+        {"role": "user", "content": "Can you convert that to kilometers per hour?"}
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "system": [
+        {"type": "text", "text": "You are a helpful assistant that provides concise answers."},
+        {"type": "text", "text": "Always remind users to verify important information."}
+      ],
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "What is the speed of light?"}]},
+         {"role": "assistant", "content": [{"type": "text", "text": "299,792,458 m/s. Verify for your use case."}]},
+        {"role": "user", "content": [{"type": "text", "text": "Can you convert that to kilometers per hour?"}]}
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01sys002",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {"type": "text", "text": "~1,079,252,849 km/h. Verify for accuracy."}
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 95,
+        "output_tokens": 30,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01sys002",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "~1,079,252,849 km/h. Verify for accuracy.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 95,
+        "completion_tokens": 30,
+        "total_tokens": 125
+      }
+    }
+  }
+]

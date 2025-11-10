@@ -1,4 +1,4 @@
-.PHONY: all run build test test-coverage bench fmt lint audit snapshot release-calc release-prepare release-dry changelog changelog-latest clean
+.PHONY: all run build test test-coverage bench fmt lint audit generate snapshot release-calc release-prepare release-dry changelog changelog-latest clean
 
 # GOEXPERIMENT=jsonv2 required for encoding/json/jsontext
 # Enables streaming JSON transformation with preserved formatting.
@@ -17,7 +17,7 @@ all: test build
 run:
 	$(GO) run $(MAIN)
 
-build:
+build: generate
 	$(GO) build -o $(BINARY_NAME) $(MAIN)
 
 test:
@@ -41,8 +41,11 @@ audit:
 	$(GO) vet ./...
 	go tool govulncheck ./...
 
+generate:
+	$(GO) generate ./...
+
 # Build for all platforms using GoReleaser (local testing)
-snapshot:
+snapshot: generate
 	goreleaser build --snapshot --clean
 
 # Calculate the next version based on unreleased changes
@@ -71,7 +74,7 @@ release-prepare:
 	@echo "Now push the commit (git push) and the tag (git push --tags)."
 
 # Simulate full release with GoReleaser (includes archives, checksums)
-release-dry:
+release-dry: generate
 	goreleaser release --snapshot --clean
 
 # Write full changelog

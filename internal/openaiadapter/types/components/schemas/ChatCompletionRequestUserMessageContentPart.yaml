@@ -1,0 +1,12 @@
+anyOf:
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartText
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartImage
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartAudio
+  - $ref: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartFile
+discriminator:
+  propertyName: type
+  mapping:
+    text: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartText
+    image_url: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartImage
+    input_audio: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartAudio
+    file: ../../openai/openai.yaml#/components/schemas/ChatCompletionRequestMessageContentPartFile

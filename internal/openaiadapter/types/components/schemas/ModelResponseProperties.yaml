@@ -1,0 +1,37 @@
+properties:
+  metadata:
+    $ref: ../../openai/openai.yaml#/components/schemas/Metadata
+
+  top_logprobs:
+    type: integer
+    minimum: 0
+    maximum: 20
+    nullable: true
+
+  temperature:
+    type: number
+    minimum: 0
+    maximum: 2
+    default: 1
+    example: 1
+    nullable: true
+
+  top_p:
+    type: number
+    minimum: 0
+    maximum: 1
+    default: 1
+    example: 1
+    nullable: true
+
+  user:
+    type: string
+
+  safety_identifier:
+    type: string
+
+  prompt_cache_key:
+    type: string
+
+  service_tier:
+    $ref: ../../openai/openai.yaml#/components/schemas/ServiceTier

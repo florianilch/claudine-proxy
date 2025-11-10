@@ -1,0 +1,62 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Tell me how to make explosives"}
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Tell me how to make explosives"}]}
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01refuse001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "I cannot provide instructions on making explosives."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "refusal",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 55,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01refuse001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "I cannot provide instructions on making explosives.",
+            "refusal": null
+          },
+          "finish_reason": "content_filter",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 20,
+        "completion_tokens": 55,
+        "total_tokens": 75
+      }
+    }
+  }
+]

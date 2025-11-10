@@ -1,0 +1,22 @@
+properties:
+  type:
+    type: string
+    enum:
+      - grammar
+  grammar:
+    type: object
+    properties:
+      definition:
+        type: string
+      syntax:
+        type: string
+        enum:
+          - lark
+          - regex
+    required:
+      - definition
+      - syntax
+required:
+  - type
+  - grammar
+additionalProperties: false

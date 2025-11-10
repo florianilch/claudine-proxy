@@ -1,0 +1,20 @@
+description: >-
+  Messages sent by an end user, containing prompts or additional context
+  information.
+properties:
+  content:
+    anyOf:
+      - type: string
+      - type: array
+        items:
+          $ref: ChatCompletionRequestUserMessageContentPart.yaml
+        minItems: 1
+  role:
+    type: string
+    enum:
+      - user
+  name:
+    type: string
+required:
+  - content
+  - role

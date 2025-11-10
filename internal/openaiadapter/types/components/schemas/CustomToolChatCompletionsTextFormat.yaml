@@ -1,0 +1,8 @@
+properties:
+  type:
+    type: string
+    enum:
+      - text
+required:
+  - type
+additionalProperties: false

@@ -1,0 +1,21 @@
+description: >-
+  Developer-provided instructions that the model should follow, regardless of
+  messages sent by the user. With o1 models and newer, `developer` messages
+  replace the previous `system` messages.
+properties:
+  content:
+    anyOf:
+      - type: string
+      - type: array
+        items:
+          $ref: ChatCompletionRequestDeveloperMessageContentPart.yaml
+        minItems: 1
+  role:
+    type: string
+    enum:
+      - developer
+  name:
+    type: string
+required:
+  - content
+  - role

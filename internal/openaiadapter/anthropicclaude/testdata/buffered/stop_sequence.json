@@ -1,0 +1,64 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Say hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stop": ["!"]
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Say hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stop_sequences": ["!"]
+    },
+    "anthropicResponse": {
+      "id": "msg_01stopseq001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "Hello"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "stop_sequence",
+      "stop_sequence": "!",
+      "usage": {
+        "input_tokens": 12,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01stopseq001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hello",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 12,
+        "completion_tokens": 5,
+        "total_tokens": 17
+      }
+    }
+  }
+]

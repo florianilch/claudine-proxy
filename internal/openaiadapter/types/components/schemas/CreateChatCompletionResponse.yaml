@@ -1,0 +1,29 @@
+properties:
+  id:
+    type: string
+  choices:
+    type: array
+    items:
+      $ref: CreateChatCompletionResponseChoice.yaml
+  created:
+    type: integer
+  model:
+    type: string
+  service_tier:
+    $ref: ../../openai/openai.yaml#/components/schemas/ServiceTier
+  system_fingerprint:
+    type: string
+    deprecated: true
+  object:
+    type: string
+    enum:
+      - chat.completion
+  usage:
+    $ref: ../../openai/openai.yaml#/components/schemas/CompletionUsage
+
+required:
+  - choices
+  - created
+  - id
+  - model
+  - object
