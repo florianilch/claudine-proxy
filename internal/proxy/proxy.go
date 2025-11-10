@@ -16,6 +16,7 @@ import (
 	"golang.org/x/oauth2"
 
 	"github.com/florianilch/claudine-proxy/internal/observability/middleware"
+	"github.com/florianilch/claudine-proxy/internal/openaiadapter/anthropicclaude"
 )
 
 const (
@@ -109,12 +110,24 @@ func New(ts oauth2.TokenSource, opts ...Option) (*Proxy, error) {
 		Transport:     transport,
 	}
 
+	// OpenAI SDK compatibility handler
+	createChatCompletionsHandler := &CreateChatCompletionsHandler{
+		Adapter:   anthropicclaude.NewCreateChatCompletionAdapter(),
+		Transport: transport,
+	}
+
 	logger := slog.Default()
 
 	mux := http.NewServeMux()
 
 	// Forward proxy to Anthropic Messages API
 	mux.Handle("POST "+upstream.Path+"/messages", applyMiddlewares(reverseProxyHandler,
+		middleware.Logging(logger),
+		Recovery,
+	))
+
+	// OpenAI SDK compatibility layer
+	mux.Handle("POST "+upstream.Path+"/chat/completions", applyMiddlewares(createChatCompletionsHandler,
 		middleware.Logging(logger),
 		Recovery,
 	))
