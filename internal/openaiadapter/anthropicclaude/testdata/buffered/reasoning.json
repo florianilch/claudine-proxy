@@ -1,0 +1,215 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "What are the prime factors of 91?"}
+      ],
+      "reasoning_effort": "low",
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "What are the prime factors of 91?"}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 1024
+      },
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01think001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "thinking",
+          "thinking": "91 ÷ 7 = 13. Both prime."
+        },
+        {
+          "type": "text",
+          "text": "The prime factors of 91 are 7 and 13."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 25,
+        "output_tokens": 95,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01think001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "The prime factors of 91 are 7 and 13.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 25,
+        "completion_tokens": 95,
+        "total_tokens": 120
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Explain the concept of recursion in computer science with examples."}
+      ],
+      "reasoning_effort": "medium",
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Explain the concept of recursion in computer science with examples."}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 8192
+      },
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01think002",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "thinking",
+          "thinking": "Define recursion, explain base/recursive cases, give factorial example."
+        },
+        {
+          "type": "text",
+          "text": "Recursion is when a function calls itself. Key parts: base case (stops recursion) and recursive case.\n\n```python\ndef factorial(n):\n    if n <= 1: return 1\n    return n * factorial(n-1)\n```"
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 30,
+        "output_tokens": 285,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01think002",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Recursion is when a function calls itself. Key parts: base case (stops recursion) and recursive case.\n\n```python\ndef factorial(n):\n    if n <= 1: return 1\n    return n * factorial(n-1)\n```",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 30,
+        "completion_tokens": 285,
+        "total_tokens": 315
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Solve this complex logic puzzle step by step."}
+      ],
+      "reasoning_effort": "high",
+      "extra_body": {
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 16000
+        }
+      },
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Solve this complex logic puzzle step by step."}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 16000
+      },
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01think003",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "thinking",
+          "thinking": "No puzzle provided. Need to ask for details."
+        },
+        {
+          "type": "text",
+          "text": "Please provide the puzzle details."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 28,
+        "output_tokens": 85,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01think003",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Please provide the puzzle details.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 28,
+        "completion_tokens": 85,
+        "total_tokens": 113
+      }
+    }
+  }
+]

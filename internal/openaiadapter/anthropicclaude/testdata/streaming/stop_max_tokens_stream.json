@@ -1,0 +1,96 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Count from 1 to 100"}
+      ],
+      "max_completion_tokens": 20,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Count from 1 to 100"}]}
+      ],
+      "max_tokens": 20,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01maxtoken001\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":15,\"output_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"1, 2, 3, 4, 5, 6, 7, 8, 9, 10\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"max_tokens\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":20}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01maxtoken001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01maxtoken001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01maxtoken001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "length",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 15,
+          "completion_tokens": 20,
+          "total_tokens": 35
+        }
+      }
+    ]
+  }
+]

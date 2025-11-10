@@ -1,0 +1,231 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "What's in this image?"},
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+                "detail": "high"
+              }
+            }
+          ]
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "What's in this image?"},
+            {
+              "type": "image",
+              "source": {
+                "type": "base64",
+                "media_type": "image/jpeg",
+                "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+              }
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01image001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "Corrupted image file."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 250,
+        "output_tokens": 45,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 150
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01image001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Corrupted image file.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 250,
+        "completion_tokens": 45,
+        "total_tokens": 295,
+        "prompt_tokens_details": {
+          "cached_tokens": 150
+        }
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "What's in this image?"},
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+                "detail": "high"
+              }
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": "Corrupted image file."
+        },
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "Analyze these two images:"},
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "https://example.com/image1.jpg"
+              }
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+                "detail": "low"
+              }
+            }
+          ]
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "What's in this image?"},
+            {
+              "type": "image",
+              "source": {
+                "type": "base64",
+                "media_type": "image/jpeg",
+                "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+              }
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Corrupted image file."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "Analyze these two images:"},
+            {
+              "type": "image",
+              "source": {
+                "type": "url",
+                "url": "https://example.com/image1.jpg"
+              }
+            },
+            {
+              "type": "image",
+              "source": {
+                "type": "base64",
+                "media_type": "image/png",
+                "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              }
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01image002",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "URL image (inaccessible) and 1x1 red pixel."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 570,
+        "output_tokens": 68,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 150
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01image002",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "URL image (inaccessible) and 1x1 red pixel.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 570,
+        "completion_tokens": 68,
+        "total_tokens": 638,
+        "prompt_tokens_details": {
+          "cached_tokens": 150
+        }
+      }
+    }
+  }
+]

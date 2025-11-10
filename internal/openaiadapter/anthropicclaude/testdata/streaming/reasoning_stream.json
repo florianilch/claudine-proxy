@@ -1,0 +1,332 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "What are the prime factors of 91?"}
+      ],
+      "reasoning_effort": "low",
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "What are the prime factors of 91?"}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 1024
+      },
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01think001\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":25,\"output_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"91 ÷ 7 = 13. Both prime.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":1,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"text_delta\",\"text\":\"The prime factors of 91 are 7 and 13.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":1}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":95}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01think001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "The prime factors of 91 are 7 and 13."
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 95,
+          "total_tokens": 120
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Explain the concept of recursion in computer science with examples."}
+      ],
+      "reasoning_effort": "medium",
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Explain the concept of recursion in computer science with examples."}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 8192
+      },
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01think002\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":30,\"output_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"Define recursion, explain base/recursive cases, give factorial example.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":1,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"text_delta\",\"text\":\"Recursion is when a function calls itself. Key parts: base case (stops recursion) and recursive case.\\n\\n```python\\ndef factorial(n):\\n    if n <= 1: return 1\\n    return n * factorial(n-1)\\n```\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":1}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":285}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01think002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Recursion is when a function calls itself. Key parts: base case (stops recursion) and recursive case.\n\n```python\ndef factorial(n):\n    if n <= 1: return 1\n    return n * factorial(n-1)\n```"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 30,
+          "completion_tokens": 285,
+          "total_tokens": 315
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Solve this complex logic puzzle step by step."}
+      ],
+      "reasoning_effort": "high",
+      "extra_body": {
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 16000
+        }
+      },
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Solve this complex logic puzzle step by step."}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 16000
+      },
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01think003\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":28,\"output_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"thinking\",\"thinking\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"thinking_delta\",\"thinking\":\"No puzzle provided. Need to ask for details.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":1,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"text_delta\",\"text\":\"Please provide the puzzle details.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":1}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":85}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01think003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Please provide the puzzle details."
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01think003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 28,
+          "completion_tokens": 85,
+          "total_tokens": 113
+        }
+      }
+    ]
+  }
+]

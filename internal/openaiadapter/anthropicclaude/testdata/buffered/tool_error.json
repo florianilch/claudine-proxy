@@ -1,0 +1,294 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather in Tokyo?"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": ["celsius", "fahrenheit"]
+                }
+              },
+              "required": ["location"]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather in Tokyo?"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": ["celsius", "fahrenheit"]
+              }
+            },
+            "required": ["location"]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01error001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_01error",
+          "name": "get_weather",
+          "input": {
+            "location": "Tokyo",
+            "unit": "celsius"
+          }
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 120,
+        "output_tokens": 28,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01error001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": null,
+            "refusal": null,
+            "tool_calls": [
+              {
+                "id": "toolu_01error",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"Tokyo\",\"unit\":\"celsius\"}"
+                }
+              }
+            ]
+          },
+          "finish_reason": "tool_calls",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 120,
+        "completion_tokens": 28,
+        "total_tokens": 148
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather in Tokyo?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01error",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Tokyo\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"error\":\"Weather service temporarily unavailable for location: Tokyo\"}",
+          "tool_call_id": "toolu_01error"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": ["celsius", "fahrenheit"]
+                }
+              },
+              "required": ["location"]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather in Tokyo?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01error",
+              "name": "get_weather",
+              "input": {
+                "location": "Tokyo",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01error",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"error\":\"Weather service temporarily unavailable for location: Tokyo\"}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": ["celsius", "fahrenheit"]
+              }
+            },
+            "required": ["location"]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01error002",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "I'm unable to retrieve the weather information for Tokyo at the moment. The weather service appears to be temporarily unavailable for that location."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 180,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01error002",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "I'm unable to retrieve the weather information for Tokyo at the moment. The weather service appears to be temporarily unavailable for that location.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 180,
+        "completion_tokens": 35,
+        "total_tokens": 215
+      }
+    }
+  }
+]

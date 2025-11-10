@@ -1,0 +1,318 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather like in Paris?"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "tool_choice": "auto",
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather like in Paris?"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "tool_choice": {
+        "type": "auto"
+      },
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01tool001",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_01abc",
+          "name": "get_weather",
+          "input": {
+            "location": "Paris",
+            "unit": "celsius"
+          }
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "tool_use",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 120,
+        "output_tokens": 35,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01tool001",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": null,
+            "refusal": null,
+            "tool_calls": [
+              {
+                "id": "toolu_01abc",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"Paris\",\"unit\":\"celsius\"}"
+                }
+              }
+            ]
+          },
+          "finish_reason": "tool_calls",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 120,
+        "completion_tokens": 35,
+        "total_tokens": 155
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather like in Paris?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01abc",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Paris\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}",
+          "tool_call_id": "toolu_01abc"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather like in Paris?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01abc",
+              "name": "get_weather",
+              "input": {
+                "location": "Paris",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01abc",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 22, \"condition\":\"sunny\",\"humidity\": 45}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01tool002",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 180,
+        "output_tokens": 42,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01tool002",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "The weather in Paris is currently sunny and pleasant! The temperature is 22°C with a humidity level of 45%. It's a beautiful day in the city.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 180,
+        "completion_tokens": 42,
+        "total_tokens": 222
+      }
+    }
+  }
+]

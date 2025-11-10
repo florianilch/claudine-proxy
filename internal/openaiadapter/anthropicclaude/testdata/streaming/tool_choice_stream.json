@@ -1,0 +1,562 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's 2+2?"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "calculator",
+            "description": "Perform mathematical calculations",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "expression": {
+                  "type": "string",
+                  "description": "Mathematical expression to evaluate"
+                }
+              },
+              "required": [
+                "expression"
+              ]
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "get_time",
+            "description": "Get current time",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "timezone": {
+                  "type": "string",
+                  "description": "Timezone name"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "tool_choice": "required",
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's 2+2?"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "calculator",
+          "description": "Perform mathematical calculations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string",
+                "description": "Mathematical expression to evaluate"
+              }
+            },
+            "required": [
+              "expression"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "description": "Get current time",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string",
+                "description": "Timezone name"
+              }
+            }
+          }
+        }
+      ],
+      "tool_choice": {
+        "type": "any"
+      },
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01choice001\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":85,\"output_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_01calc\",\"name\":\"calculator\",\"input\":{}}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"expression\\\":\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"2+2\\\"}\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":28}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01choice001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "toolu_01calc",
+                  "type": "function",
+                  "function": {
+                    "name": "calculator",
+                    "arguments": ""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "{\"expression\":"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "\"2+2\"}"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 85,
+          "completion_tokens": 28,
+          "total_tokens": 113
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's 2+2?"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "toolu_01calc",
+              "type": "function",
+              "function": {
+                "name": "calculator",
+                "arguments": "{\"expression\":\"2+2\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "4",
+          "tool_call_id": "toolu_01calc"
+        },
+        {
+          "role": "assistant",
+          "content": "The result is 4."
+        },
+        {
+          "role": "user",
+          "content": "What time is it in Tokyo?"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "calculator",
+            "description": "Perform mathematical calculations",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "expression": {
+                  "type": "string",
+                  "description": "Mathematical expression to evaluate"
+                }
+              },
+              "required": [
+                "expression"
+              ]
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "get_time",
+            "description": "Get current time",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "timezone": {
+                  "type": "string",
+                  "description": "Timezone name"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "tool_choice": {
+        "type": "function",
+        "function": {
+          "name": "get_time"
+        }
+      },
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's 2+2?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01calc",
+              "name": "calculator",
+              "input": {
+                "expression": "2+2"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01calc",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "4"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "The result is 4."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What time is it in Tokyo?"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "calculator",
+          "description": "Perform mathematical calculations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string",
+                "description": "Mathematical expression to evaluate"
+              }
+            },
+            "required": [
+              "expression"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "description": "Get current time",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string",
+                "description": "Timezone name"
+              }
+            }
+          }
+        }
+      ],
+      "tool_choice": {
+        "type": "tool",
+        "name": "get_time"
+      },
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01choice002\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":160,\"output_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_02time\",\"name\":\"get_time\",\"input\":{}}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"timezone\\\":\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"Asia/Tokyo\\\"}\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":32}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01choice002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "toolu_02time",
+                  "type": "function",
+                  "function": {
+                    "name": "get_time",
+                    "arguments": ""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "{\"timezone\":"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "\"Asia/Tokyo\"}"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01choice002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 160,
+          "completion_tokens": 32,
+          "total_tokens": 192
+        }
+      }
+    ]
+  }
+]

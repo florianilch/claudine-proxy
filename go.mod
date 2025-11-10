@@ -3,8 +3,10 @@ module github.com/florianilch/claudine-proxy
 go 1.25.3
 
 require (
+	github.com/anthropics/anthropic-sdk-go v1.17.0
 	github.com/go-chi/httplog/v3 v3.3.0
 	github.com/go-playground/validator/v10 v10.28.0
+	github.com/google/uuid v1.5.0
 	github.com/knadh/koanf/parsers/toml/v2 v2.2.0
 	github.com/knadh/koanf/providers/confmap v1.0.0
 	github.com/knadh/koanf/providers/env/v2 v2.0.0
@@ -33,7 +35,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/google/uuid v1.5.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
@@ -48,6 +49,10 @@ require (
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/speakeasy-api/jsonpath v0.6.0 // indirect
 	github.com/speakeasy-api/openapi-overlay v0.10.2 // indirect
+	github.com/tidwall/gjson v1.18.0 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/vmware-labs/yaml-jsonpath v0.3.2 // indirect
 	github.com/woodsbury/decimal128 v1.3.0 // indirect
 	golang.org/x/crypto v0.42.0 // indirect

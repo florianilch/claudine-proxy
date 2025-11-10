@@ -1,0 +1,725 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather in Tokyo?"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather in Tokyo?"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01mixed001\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":120,\"output_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"I'll check Tokyo's weather for you.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":1,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_01tokyo\",\"name\":\"get_weather\",\"input\":{}}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"location\\\":\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"Tokyo\\\",\\\"unit\\\":\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":1,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"\\\"celsius\\\"}\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":1}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":55}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "I'll check Tokyo's weather for you."
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "toolu_01tokyo",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": ""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "{\"location\":"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "\"Tokyo\",\"unit\":"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "\"celsius\"}"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed001",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 120,
+          "completion_tokens": 55,
+          "total_tokens": 175
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather in Tokyo?"
+        },
+        {
+          "role": "assistant",
+          "content": "I'll check Tokyo's weather for you.",
+          "tool_calls": [
+            {
+              "id": "toolu_01tokyo",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Tokyo\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 24, \"condition\":\"sunny\",\"humidity\": 60}",
+          "tool_call_id": "toolu_01tokyo"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather in Tokyo?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "I'll check Tokyo's weather for you."
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_01tokyo",
+              "name": "get_weather",
+              "input": {
+                "location": "Tokyo",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01tokyo",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 24, \"condition\":\"sunny\",\"humidity\": 60}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01mixed002\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":200,\"output_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"The weather in Tokyo is sunny with a temperature of 24°C and 60% humidity.\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":25}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01mixed002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "The weather in Tokyo is sunny with a temperature of 24°C and 60% humidity."
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed002",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 200,
+          "completion_tokens": 25,
+          "total_tokens": 225
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What's the weather in Tokyo?"
+        },
+        {
+          "role": "assistant",
+          "content": "I'll check Tokyo's weather for you.",
+          "tool_calls": [
+            {
+              "id": "toolu_01tokyo",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"location\":\"Tokyo\",\"unit\":\"celsius\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "content": "{\"temperature\": 24, \"condition\":\"sunny\",\"humidity\": 60}",
+          "tool_call_id": "toolu_01tokyo"
+        },
+        {
+          "role": "assistant",
+          "content": "The weather in Tokyo is sunny with a temperature of 24°C and 60% humidity."
+        },
+        {
+          "role": "user",
+          "content": "Thanks!"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city name"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        }
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "What's the weather in Tokyo?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "I'll check Tokyo's weather for you."
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_01tokyo",
+              "name": "get_weather",
+              "input": {
+                "location": "Tokyo",
+                "unit": "celsius"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "toolu_01tokyo",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"temperature\": 24, \"condition\":\"sunny\",\"humidity\": 60}"
+                }
+              ],
+              "is_error": false
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "The weather in Tokyo is sunny with a temperature of 24°C and 60% humidity."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Thanks!"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The city name"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ]
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: message_start",
+      "data: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_01mixed003\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-3-5-sonnet-20241022\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":240,\"output_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0}}}",
+      "",
+      "event: content_block_start",
+      "data: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}",
+      "",
+      "event: content_block_delta",
+      "data: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"You're welcome!\"}}",
+      "",
+      "event: content_block_stop",
+      "data: {\"type\":\"content_block_stop\",\"index\":0}",
+      "",
+      "event: message_delta",
+      "data: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":8}}",
+      "",
+      "event: message_stop",
+      "data: {\"type\":\"message_stop\"}",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "id": "msg_01mixed003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "You're welcome!"
+            },
+            "finish_reason": null,
+            "logprobs": null
+          }
+        ]
+      },
+      {
+        "id": "msg_01mixed003",
+        "object": "chat.completion.chunk",
+        "created": 0,
+        "model": "claude-3-5-sonnet-20241022",
+        "service_tier": null,
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 240,
+          "completion_tokens": 8,
+          "total_tokens": 248
+        }
+      }
+    ]
+  }
+]
