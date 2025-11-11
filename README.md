@@ -2,7 +2,7 @@
 
 Unlock your Claude Pro/Max subscription in any tool or library.
 
-**Claudine** is a lightweight, session-free OAuth ambassador for Claude. It can be deployed as a local sidecar or as a shared service for development.
+**Claudine** is a lightweight, session-free OAuth ambassador for Claude. It is designed for low-latency streaming and can be deployed as a local sidecar or as a shared service for development.
 
 ✅ **OpenAI Compatibility:** A drop-in, OpenAI-compatible endpoint for `v1/chat/completions` makes integration with existing **OpenAI SDK** and tools like **Jan.ai** or **Raycast** zero-effort.
 
@@ -222,6 +222,15 @@ Claudine securely handles your auth details.
 | `keyring` | **Default & Recommended.** Securely uses the OS keychain (macOS Keychain, Windows Credential Manager, etc.). |
 | `file`    | Plain-text file. Good for systems without a native keychain. |
 | `env`     | Reads from an env var. Escape hatch for ephemeral environments like CI/CD – won't auto-refresh. |
+
+## Performance
+
+Claudine is designed to add minimal overhead to your API calls:
+
+- **Sub-millisecond streaming** – First byte <500µs, constant ~120KB memory
+- **Efficient concurrency** – Handles many concurrent requests with stable latency
+
+*Benchmarks run with a mocked upstream to isolate proxy overhead. Run `make bench` to test on your own hardware.*
 
 ## Requirements
 
