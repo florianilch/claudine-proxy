@@ -6,9 +6,10 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/urfave/cli/v3"
+
 	"github.com/florianilch/claudine-proxy/internal/app"
 	"github.com/florianilch/claudine-proxy/internal/observability"
-	"github.com/urfave/cli/v3"
 )
 
 // Execute runs the root command with the given context and arguments.
