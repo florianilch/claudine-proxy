@@ -131,6 +131,7 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 		Recovery,
 		middleware.TraceContextExtraction,
 		middleware.RequestIDGeneration,
+		RequestSizeLimit(100<<20),
 		middleware.RequestIDPropagation,
 	))
 
@@ -140,6 +141,7 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 		Recovery,
 		middleware.TraceContextExtraction,
 		middleware.RequestIDGeneration,
+		RequestSizeLimit(100<<20),
 		middleware.RequestIDPropagation,
 	))
 

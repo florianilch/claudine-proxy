@@ -16,6 +16,17 @@ func Recovery(next http.Handler) http.Handler {
 	})
 }
 
+// RequestSizeLimit enforces maximum request body size.
+// Handlers that read the body will receive *http.MaxBytesError when the limit is exceeded.
+func RequestSizeLimit(maxBytes int64) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
 // applyMiddlewares applies middlewares to a handler in the order they appear.
 // The first middleware in the slice is the outermost (executes first).
 func applyMiddlewares(h http.Handler, middlewares ...func(http.Handler) http.Handler) http.Handler {
