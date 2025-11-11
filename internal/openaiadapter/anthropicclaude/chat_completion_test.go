@@ -278,3 +278,89 @@ func TestCreateChatCompletionAdapter_Streaming(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkCreateChatCompletion_Buffered(b *testing.B) {
+	data, err := os.ReadFile("testdata/buffered/tool_use.json")
+	if err != nil {
+		b.Fatalf("Failed to read fixture: %v", err)
+	}
+
+	var turns []turn
+	if err := json.Unmarshal(data, &turns); err != nil {
+		b.Fatalf("Failed to unmarshal fixture: %v", err)
+	}
+
+	if len(turns) == 0 {
+		b.Fatal("No turns in fixture")
+	}
+
+	firstTurn := turns[0]
+	var openaiReq types.CreateChatCompletionRequest
+	if err := json.Unmarshal(firstTurn.OpenAIRequest, &openaiReq); err != nil {
+		b.Fatalf("Failed to parse openaiRequest: %v", err)
+	}
+
+	adapter := anthropicclaude.NewCreateChatCompletionAdapter()
+	ctx := context.Background()
+
+	b.ReportAllocs()
+
+	for b.Loop() {
+		mock := &mockTransport{
+			responseBody:   string(firstTurn.AnthropicResponse),
+			responseStatus: http.StatusOK,
+		}
+
+		_, err := adapter.ProcessRequest(ctx, openaiReq, mock)
+		if err != nil {
+			b.Fatalf("ProcessRequest failed: %v", err)
+		}
+	}
+}
+
+func BenchmarkCreateChatCompletion_Streaming(b *testing.B) {
+	data, err := os.ReadFile("testdata/streaming/tool_use_stream.json")
+	if err != nil {
+		b.Fatalf("Failed to read fixture: %v", err)
+	}
+
+	var turns []streamingTurn
+	if err := json.Unmarshal(data, &turns); err != nil {
+		b.Fatalf("Failed to unmarshal fixture: %v", err)
+	}
+
+	if len(turns) == 0 {
+		b.Fatal("No turns in fixture")
+	}
+
+	firstTurn := turns[0]
+	var openaiReq types.CreateChatCompletionRequest
+	if err := json.Unmarshal(firstTurn.OpenAIRequest, &openaiReq); err != nil {
+		b.Fatalf("Failed to parse openaiRequest: %v", err)
+	}
+
+	adapter := anthropicclaude.NewCreateChatCompletionAdapter()
+	ctx := context.Background()
+
+	b.ReportAllocs()
+
+	for b.Loop() {
+		mock := &mockTransport{
+			responseBody:   strings.Join(firstTurn.AnthropicSSE, "\n"),
+			responseStatus: http.StatusOK,
+		}
+
+		stream, err := adapter.ProcessStreamingRequest(ctx, openaiReq, mock)
+		if err != nil {
+			b.Fatalf("ProcessStreamingRequest failed: %v", err)
+		}
+
+		// Streams must be fully consumed to measure realistic performance
+		for chunk, err := range stream {
+			if err != nil {
+				b.Fatalf("Stream error: %v", err)
+			}
+			_ = chunk
+		}
+	}
+}
