@@ -1,8 +1,19 @@
-# claudine – Use Your Claude Subscription Everywhere
+<h1>
+  <picture>
+    <source width="466" media="(prefers-color-scheme: dark)" srcset="assets/banner.gif">
+    <img width="466" alt="claudine" src="assets/banner.gif">
+  </picture>
+</h1>
 
-Unlock your Claude Pro/Max subscription in any tool or library.
+<br />
 
-**Claudine** is a lightweight, session-free OAuth ambassador for Claude. It is designed for low-latency streaming and can be deployed as a local sidecar or as a shared service for development.
+<p><b>Use Your Claude Subscription Everywhere</b></p>
+<p>
+  <b>Claudine</b> is a lightweight, session-free OAuth ambassador for Claude. It is designed for low-latency streaming and can be deployed as a local sidecar or as a shared service for development.
+  <br /><br />
+</p>
+
+---
 
 ✅ **OpenAI Compatibility:** A drop-in, OpenAI-compatible endpoint for `v1/chat/completions` makes integration with existing **OpenAI SDK** and tools like **Jan.ai** or **Raycast** zero-effort.
 
@@ -11,6 +22,16 @@ Unlock your Claude Pro/Max subscription in any tool or library.
 ✅ **Privacy by Design:** Designed as a pass-through proxy; never logs credentials or request/response bodies.
 
 ✅ **Designed for Observability:** Structured JSON logs with built-in trace correlation using W3C Trace Context.
+
+---
+
+<br />
+
+<p>
+<a href="https://github.com/florianilch/claudine-proxy/releases/latest"><img src="https://img.shields.io/github/v/release/florianilch/claudine-proxy?style=flat&logo=GitHub&labelColor=1C2C2E&color=44CC11"></a>
+<a href="https://github.com/florianilch/claudine-proxy/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/florianilch/claudine-proxy/ci.yml?style=flat&labelColor=1C2C2E&color=BEC5C9"></a>
+<br /><br />
+</p>
 
 ## 🚀 60-Second Quick Start
 
@@ -23,8 +44,6 @@ brew install --cask florianilch/tap/claudine
 ```
 
 For direct control, grab the [latest release](https://github.com/florianilch/claudine-proxy/releases/latest) for **Windows**, **Linux** or **macOS** and move it into your `PATH`.
-
-<a href="https://github.com/florianilch/claudine-proxy/releases/latest"><img src="https://img.shields.io/github/v/release/florianilch/claudine-proxy?style=flat&logo=GitHub"></a>
 
 **2. Authenticate**
 
