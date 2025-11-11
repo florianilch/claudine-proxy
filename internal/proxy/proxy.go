@@ -129,12 +129,18 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 	mux.Handle("POST "+upstream.Path+"/messages", applyMiddlewares(reverseProxyHandler,
 		middleware.Logging(logger),
 		Recovery,
+		middleware.TraceContextExtraction,
+		middleware.RequestIDGeneration,
+		middleware.RequestIDPropagation,
 	))
 
 	// OpenAI SDK compatibility layer
 	mux.Handle("POST "+upstream.Path+"/chat/completions", applyMiddlewares(createChatCompletionsHandler,
 		middleware.Logging(logger),
 		Recovery,
+		middleware.TraceContextExtraction,
+		middleware.RequestIDGeneration,
+		middleware.RequestIDPropagation,
 	))
 
 	// Health check endpoints

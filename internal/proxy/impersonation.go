@@ -22,6 +22,13 @@ var (
 		"Accept":          true,
 		"Accept-Encoding": true,
 		"Authorization":   true,
+
+		// W3C Trace Context for distributed tracing correlation.
+		// Traceparent and Tracestate enable end-to-end trace propagation through the proxy.
+		// Baggage is excluded - it propagates application-level context (user-id, feature-flags)
+		// rather than tracing data, and is unnecessary for our use case.
+		"Traceparent": true,
+		"Tracestate":  true,
 	}
 )
 
