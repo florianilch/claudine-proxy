@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"time"
 
 	"github.com/urfave/cli/v3"
 
@@ -79,10 +80,17 @@ func proxyStartAction(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	// Set up observability before creating app
-	err = observability.Instrument(cfg.LogLevel, string(cfg.LogFormat))
+	otelShutdown, err := observability.Instrument(ctx, cfg.LogLevel, string(cfg.LogFormat))
 	if err != nil {
 		return fmt.Errorf("failed to set up observability layer: %w", err)
 	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if shutdownErr := otelShutdown(shutdownCtx); shutdownErr != nil {
+			slog.ErrorContext(shutdownCtx, "Failed to shutdown observability", "error", shutdownErr)
+		}
+	}()
 
 	application, err := app.New(cfg)
 	if err != nil {
