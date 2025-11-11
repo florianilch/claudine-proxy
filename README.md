@@ -179,6 +179,7 @@ Run `claudine --help` for all available options.
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `CLAUDINE_SHUTDOWN__DELAY` | Delay before shutdown starts | `0s` |
 | `CLAUDINE_SHUTDOWN__TIMEOUT` | Graceful shutdown timeout | `10s` |
 | `CLAUDINE_AUTH__STORAGE` | Token storage (`keyring`, `file`, `env`) | `keyring` |
 | `CLAUDINE_AUTH__FILE` | Path for `file` storage | *Platform-dependent \** |
@@ -222,6 +223,13 @@ Claudine securely handles your auth details.
 | `keyring` | **Default & Recommended.** Securely uses the OS keychain (macOS Keychain, Windows Credential Manager, etc.). |
 | `file`    | Plain-text file. Good for systems without a native keychain. |
 | `env`     | Reads from an env var. Escape hatch for ephemeral environments like CI/CD – won't auto-refresh. |
+
+## Health Checks
+
+Health endpoints are also provided for container orchestration and service management.
+
+*   **Liveness:** `GET /health/liveness`
+*   **Readiness:** `GET /health/readiness`
 
 ## Performance
 

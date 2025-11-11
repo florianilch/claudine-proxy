@@ -57,6 +57,9 @@ type ServerConfig struct {
 
 // ShutdownConfig holds shutdown behavior configuration.
 type ShutdownConfig struct {
+	// Delay before shutdown to allow readiness propagation.
+	Delay time.Duration `json:"delay"`
+
 	// Timeout for graceful shutdown.
 	Timeout time.Duration `json:"timeout"`
 }

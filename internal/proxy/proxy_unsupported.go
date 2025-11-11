@@ -14,6 +14,10 @@ func init() {
 
 type Proxy struct{}
 
+type ReadinessChecker interface {
+	IsReady() bool
+}
+
 type Option func(*config)
 type config struct{}
 
@@ -21,7 +25,7 @@ func WithBaseURL(baseURL string) Option {
 	return func(c *config) {}
 }
 
-func New(ts oauth2.TokenSource, opts ...Option) (*Proxy, error) {
+func New(oauth2.TokenSource, ReadinessChecker, ...Option) (*Proxy, error) {
 	return nil, nil
 }
 

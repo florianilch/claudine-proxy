@@ -38,6 +38,13 @@ func (m *mockAnthropicTransport) RoundTrip(req *http.Request) (*http.Response, e
 	}, nil
 }
 
+// mockReadinessChecker always reports ready status for benchmarks.
+type mockReadinessChecker struct{}
+
+func (mockReadinessChecker) IsReady() bool {
+	return true
+}
+
 // streamingTurn represents a single streaming request-response cycle from test fixtures.
 type streamingTurn struct {
 	OpenAIRequest    json.RawMessage   `json:"openaiRequest"`
@@ -115,8 +122,9 @@ func setupProxyWithMockTransport(b *testing.B, transport http.RoundTripper) *Pro
 	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 
 	mockTokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "test-token"})
+	mockHealth := mockReadinessChecker{}
 
-	proxy, err := New(mockTokenSource, WithTransport(transport))
+	proxy, err := New(mockTokenSource, mockHealth, WithTransport(transport))
 	if err != nil {
 		b.Fatalf("Failed to create proxy: %v", err)
 	}
