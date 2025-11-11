@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"strconv"
+	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/errgroup"
@@ -16,8 +17,9 @@ import (
 
 // App orchestrates the lifecycle of the proxy server and related services.
 type App struct {
-	cfg   *Config
-	proxy *proxy.Proxy
+	cfg    *Config
+	proxy  *proxy.Proxy
+	health *Health
 }
 
 // New creates a new App instance.
@@ -26,20 +28,23 @@ func New(cfg *Config) (*App, error) {
 		return nil, fmt.Errorf("invalid configuration: %w", err)
 	}
 
+	health := NewHealth()
+
 	// I/O deferred to first Token() call
 	tokenSource, err := newTokenSource(cfg.Auth)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create token source: %w", err)
 	}
 
-	proxyServer, err := proxy.New(tokenSource, proxy.WithBaseURL(cfg.Upstream.BaseURL))
+	proxyServer, err := proxy.New(tokenSource, health, proxy.WithBaseURL(cfg.Upstream.BaseURL))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create proxy: %w", err)
 	}
 
 	return &App{
-		cfg:   cfg,
-		proxy: proxyServer,
+		cfg:    cfg,
+		proxy:  proxyServer,
+		health: health,
 	}, nil
 }
 
@@ -73,11 +78,14 @@ func (a *App) Start(ctx context.Context) error {
 		}
 	})
 
+	a.health.SetReady(true)
 	slog.InfoContext(gCtx, "application ready", "address", address)
 
 	runtimeErr := g.Wait()
 
+	a.health.SetReady(false)
 	slog.InfoContext(gCtx, "shutting down services")
+	time.Sleep(a.cfg.Shutdown.Delay)
 
 	// Shutdown phase: Stop all services
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), a.cfg.Shutdown.Timeout)

@@ -33,6 +33,11 @@ type Proxy struct {
 // Compile-time check that Proxy implements http.Handler
 var _ http.Handler = (*Proxy)(nil)
 
+// ReadinessChecker represents the application's health state for readiness checks.
+type ReadinessChecker interface {
+	IsReady() bool
+}
+
 // config holds internal proxy configuration applied via Options.
 type config struct {
 	baseURL   string
@@ -72,7 +77,7 @@ func DefaultTransport() *http.Transport {
 }
 
 // New creates a forward proxy configured for Anthropic API.
-func New(ts oauth2.TokenSource, opts ...Option) (*Proxy, error) {
+func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy, error) {
 	cfg := &config{
 		baseURL:   defaultBaseURL,
 		transport: DefaultTransport(),
@@ -131,6 +136,10 @@ func New(ts oauth2.TokenSource, opts ...Option) (*Proxy, error) {
 		middleware.Logging(logger),
 		Recovery,
 	))
+
+	// Health check endpoints
+	mux.HandleFunc("GET /health/liveness", livenessHandler())
+	mux.HandleFunc("GET /health/readiness", readinessHandler(health))
 
 	return &Proxy{mux: mux}, nil
 }
