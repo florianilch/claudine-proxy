@@ -106,6 +106,50 @@ curl http://localhost:4000/v1/chat/completions \
 - Set `api_key` to any value (proxy handles auth)
 - See [OpenAI Python SDK](https://github.com/openai/openai-python) or [Node.js SDK](https://github.com/openai/openai-node)
 
+### Web Search
+
+Claude can search the web to answer questions requiring current information. Enable web search by setting an environment variable:
+
+```bash
+export CLAUDINE_ENABLE_WEB_SEARCH=true
+claudine start
+```
+
+Once enabled, Claude automatically decides when to search based on your queries. Results appear as markdown-formatted links in the response.
+
+**Supported Models:**
+- claude-sonnet-4-5-20250929 (Claude Sonnet 4.5)
+- claude-sonnet-4-20250514 (Claude Sonnet 4)
+- claude-haiku-4-5-20251001 (Claude Haiku 4.5)
+- claude-opus-4 and claude-opus-4.1
+
+**Pricing:** $10 per 1,000 searches (charged by Anthropic)
+
+**Example queries:**
+- "What are the latest developments in AI today?"
+- "What's the current weather in San Francisco?"
+- "Find recent news about SpaceX launches"
+
+For OpenAI-compatible clients, you can also enable web search per-request using `web_search_options`:
+
+```bash
+curl http://localhost:4000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer claudine" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250929",
+    "messages": [{"role": "user", "content": "Latest AI news?"}],
+    "web_search_options": {
+      "user_location": {
+        "type": "approximate",
+        "approximate": {"city": "San Francisco"}
+      }
+    }
+  }'
+```
+
+**Note:** OpenAI's `search_context_size` parameter is not supported (Claude manages context automatically).
+
 ## Supported Tools & Editors
 
 Any tool that supports BYOM (Bring Your Own Models) with OpenAI-compatible endpoints works with Claudine. Here are a few popular examples:
@@ -121,6 +165,8 @@ In Settings, add a new Model Provider pointing to `http://localhost:4000/v1` and
 
 Enable Custom AI providers and add Claudine to your list of custom providers.
 
+**For web search:** Set `CLAUDINE_ENABLE_WEB_SEARCH=true` before starting Claudine. Raycast will then use Claude's web search automatically when needed.
+
 <details>
 <summary>example configuration (`providers.yaml`)</summary>
 
@@ -131,8 +177,11 @@ providers:
   - id: claudine
     name: Claudine
     base_url: http://localhost:4000/v1
+    # to enable web search in providers.yaml
+    additional_parameters:
+      web_search_options: {}
     models:
-      - id: claude-sonnet-4-5
+      - id: claude-sonnet-4-5-20250929
         name: "Claude Sonnet 4.5"
         context: 205400
         abilities:
@@ -147,6 +196,16 @@ providers:
           reasoning_effort:
             supported: true
       # ...
+```
+
+**To enable web search with Raycast:**
+```bash
+# Set environment variable before starting
+export CLAUDINE_ENABLE_WEB_SEARCH=true
+claudine start
+
+# Or for macOS launchd service, add to your plist:
+# <key>CLAUDINE_ENABLE_WEB_SEARCH</key><string>true</string>
 ```
 
 </details>
@@ -194,6 +253,7 @@ Run `claudine --help` for all available options.
 | `CLAUDINE_LOG_FORMAT` | Log output format (`text` or `json`) | `text` |
 | `CLAUDINE_SERVER__HOST` | Server bind address | `127.0.0.1` |
 | `CLAUDINE_SERVER__PORT` | Server listen port | `4000` |
+| `CLAUDINE_ENABLE_WEB_SEARCH` | Enable web search for all requests | `false` |
 
 <details>
 <summary><b>View all environment variables</b></summary>
