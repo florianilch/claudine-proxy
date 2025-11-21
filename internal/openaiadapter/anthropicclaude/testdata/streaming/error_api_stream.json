@@ -1,0 +1,322 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"overloaded_error\",\"message\":\"Overloaded\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Overloaded",
+          "type": "server_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Rate limit exceeded\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Rate limit exceeded",
+          "type": "rate_limit_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"Invalid API key\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Invalid API key",
+          "type": "authentication_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Invalid model specified\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Invalid model specified",
+          "type": "invalid_request_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"billing_error\",\"message\":\"Insufficient credits\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Insufficient credits",
+          "type": "insufficient_quota"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"permission_error\",\"message\":\"Permission denied\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Permission denied",
+          "type": "permission_denied"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"request_too_large\",\"message\":\"Request exceeds maximum size\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Request exceeds maximum size",
+          "type": "invalid_request_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"timeout_error\",\"message\":\"Request timed out\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Request timed out",
+          "type": "server_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"Model not found\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Model not found",
+          "type": "invalid_request_error"
+        }
+      }
+    ]
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "Hello"}
+      ],
+      "max_completion_tokens": 1024,
+      "stream": true
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "Hello"}]}
+      ],
+      "max_tokens": 1024,
+      "stream": true
+    },
+    "anthropicSSE": [
+      "event: error",
+      "data: {\"type\":\"error\",\"error\":{\"type\":\"api_error\",\"message\":\"Internal server error\"}}",
+      "",
+      ""
+    ],
+    "openaiChunks": [
+      {
+        "error": {
+          "message": "Internal server error",
+          "type": "api_error"
+        }
+      }
+    ]
+  }
+]

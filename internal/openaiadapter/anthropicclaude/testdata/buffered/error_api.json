@@ -1,0 +1,412 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "overloaded_error",
+        "message": "Overloaded"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Overloaded",
+        "type": "server_error"
+      }
+    },
+    "anthropicResponseStatus": 529
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "rate_limit_error",
+        "message": "Rate limit exceeded"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Rate limit exceeded",
+        "type": "rate_limit_error"
+      }
+    },
+    "anthropicResponseStatus": 429
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "authentication_error",
+        "message": "Invalid API key"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Invalid API key",
+        "type": "authentication_error"
+      }
+    },
+    "anthropicResponseStatus": 401
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "invalid_request_error",
+        "message": "Invalid model specified"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Invalid model specified",
+        "type": "invalid_request_error"
+      }
+    },
+    "anthropicResponseStatus": 400
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "billing_error",
+        "message": "Insufficient credits"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Insufficient credits",
+        "type": "insufficient_quota"
+      }
+    },
+    "anthropicResponseStatus": 402
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "permission_error",
+        "message": "Permission denied"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Permission denied",
+        "type": "permission_denied"
+      }
+    },
+    "anthropicResponseStatus": 403
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "request_too_large",
+        "message": "Request exceeds maximum size"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Request exceeds maximum size",
+        "type": "invalid_request_error"
+      }
+    },
+    "anthropicResponseStatus": 413
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "timeout_error",
+        "message": "Request timed out"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Request timed out",
+        "type": "server_error"
+      }
+    },
+    "anthropicResponseStatus": 504
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "not_found_error",
+        "message": "Model not found"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Model not found",
+        "type": "invalid_request_error"
+      }
+    },
+    "anthropicResponseStatus": 404
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "api_error",
+        "message": "Internal server error"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Internal server error",
+        "type": "api_error"
+      }
+    },
+    "anthropicResponseStatus": 500
+  }
+]

@@ -179,11 +179,13 @@ func TestCreateChatCompletionAdapter_Buffered(t *testing.T) {
 
 				response, err := adapter.ProcessRequest(ctx, openaiReq, mock)
 
-				if !strings.Contains(mock.capturedRequest.URL.Path, "/messages") {
-					t.Errorf("Expected request to /messages endpoint, got: %s", mock.capturedRequest.URL.Path)
-				}
+				if string(turn.AnthropicRequest) != "null" {
+					if !strings.Contains(mock.capturedRequest.URL.Path, "/messages") {
+						t.Errorf("Expected request to /messages endpoint, got: %s", mock.capturedRequest.URL.Path)
+					}
 
-				assertJSONEqual(t, string(mock.capturedBody), string(turn.AnthropicRequest))
+					assertJSONEqual(t, string(mock.capturedBody), string(turn.AnthropicRequest))
+				}
 
 				// Handle both success and error responses
 				if err != nil {
@@ -234,44 +236,56 @@ func TestCreateChatCompletionAdapter_Streaming(t *testing.T) {
 				}
 
 				stream, err := adapter.ProcessStreamingRequest(ctx, openaiReq, mock)
+
+				// Handle both success and error responses; handle streaming errors during streaming
 				if err != nil {
-					t.Fatalf("ProcessStreamingRequest failed: %v", err)
-				}
-
-				if !strings.Contains(mock.capturedRequest.URL.Path, "/messages") {
-					t.Errorf("Expected request to /messages endpoint, got: %s", mock.capturedRequest.URL.Path)
-				}
-
-				assertJSONEqual(t, string(mock.capturedBody), string(turn.AnthropicRequest))
-
-				var chunks []string
-				for chunk, err := range stream {
-					if err != nil {
-						var errorResponse *types.ErrorResponse
-						if !errors.As(err, &errorResponse) {
-							t.Fatalf("Expected types.ErrorResponse, got: %T", err)
+					var errorResponse *types.ErrorResponse
+					if !errors.As(err, &errorResponse) {
+						t.Fatalf("Expected types.ErrorResponse, got: %T", err)
+					}
+					gotResponse, marshalErr := json.Marshal(errorResponse)
+					if marshalErr != nil {
+						t.Fatalf("Failed to marshal error response: %v", marshalErr)
+					}
+					assertJSONEqual(t, string(gotResponse), string(turn.OpenAIChunks[0]))
+				} else {
+					if string(turn.AnthropicRequest) != "null" {
+						if !strings.Contains(mock.capturedRequest.URL.Path, "/messages") {
+							t.Errorf("Expected request to /messages endpoint, got: %s", mock.capturedRequest.URL.Path)
 						}
-						chunkJSON, marshalErr := json.Marshal(errorResponse)
-						if marshalErr != nil {
-							t.Fatalf("Failed to marshal error chunk: %v", marshalErr)
+
+						assertJSONEqual(t, string(mock.capturedBody), string(turn.AnthropicRequest))
+					}
+
+					var chunks []string
+					for chunk, err := range stream {
+						if err != nil {
+							var errorResponse *types.ErrorResponse
+							if !errors.As(err, &errorResponse) {
+								t.Fatalf("Expected types.ErrorResponse, got: %T", err)
+							}
+							chunkJSON, marshalErr := json.Marshal(errorResponse)
+							if marshalErr != nil {
+								t.Fatalf("Failed to marshal error chunk: %v", marshalErr)
+							}
+							chunks = append(chunks, string(chunkJSON))
+							break // Errors terminate stream (no more chunks expected)
+						}
+						chunkJSON, err := json.Marshal(chunk)
+						if err != nil {
+							t.Fatalf("Failed to marshal chunk: %v", err)
 						}
 						chunks = append(chunks, string(chunkJSON))
-						break // Errors terminate stream (no more chunks expected)
 					}
-					chunkJSON, err := json.Marshal(chunk)
-					if err != nil {
-						t.Fatalf("Failed to marshal chunk: %v", err)
+
+					if len(chunks) != len(turn.OpenAIChunks) {
+						t.Errorf("Chunk count mismatch: got %d, want %d", len(chunks), len(turn.OpenAIChunks))
+						t.Fatalf("Got chunks:\n%s", strings.Join(chunks, "\n"))
 					}
-					chunks = append(chunks, string(chunkJSON))
-				}
 
-				if len(chunks) != len(turn.OpenAIChunks) {
-					t.Errorf("Chunk count mismatch: got %d, want %d", len(chunks), len(turn.OpenAIChunks))
-					t.Fatalf("Got chunks:\n%s", strings.Join(chunks, "\n"))
-				}
-
-				for j, wantChunk := range turn.OpenAIChunks {
-					assertJSONEqual(t, chunks[j], string(wantChunk))
+					for j, wantChunk := range turn.OpenAIChunks {
+						assertJSONEqual(t, chunks[j], string(wantChunk))
+					}
 				}
 			}
 		})

@@ -1,0 +1,121 @@
+[
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "quantum_entanglement_error",
+        "message": "Unknown future error type"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Unknown future error type",
+        "type": "api_error"
+      }
+    },
+    "anthropicResponseStatus": 500
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "type": "error",
+      "error": {
+        "type": "hyperdimensional_flux_error",
+        "message": "Another unknown error type from the future"
+      }
+    },
+    "openaiResponse": {
+      "error": {
+        "message": "Another unknown error type from the future",
+        "type": "api_error"
+      }
+    },
+    "anthropicResponseStatus": 500
+  },
+  {
+    "openaiRequest": {
+      "model": "",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello"
+        }
+      ],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": null,
+    "anthropicResponse": null,
+    "anthropicResponseStatus": null,
+    "openaiResponse": {
+      "error": {
+        "message": "model is required",
+        "type": "server_error"
+      }
+    }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [],
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": null,
+    "anthropicResponse": null,
+    "anthropicResponseStatus": null,
+    "openaiResponse": {
+      "error": {
+        "message": "messages array cannot be empty",
+        "type": "server_error"
+      }
+    }
+  }
+]
