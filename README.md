@@ -249,32 +249,7 @@ Claudine securely handles your auth details.
 
 Claudine is built to be a good citizen in modern infrastructure, not a black box. It propagates W3C Trace Context headers and emits structured JSON logs to seamlessly integrate with your existing observability platforms.
 
-Health endpoints are also provided for container orchestration and service management.
-
-*   **Liveness:** `GET /health/liveness`
-*   **Readiness:** `GET /health/readiness`
-
-**Example: Exporting Correlated Logs via OTLP**
-
-Configure the proxy using standard OpenTelemetry environment variables.
-
-```bash
-# Set a service name for easy identification
-export OTEL_SERVICE_NAME="claudine"
-
-# Enable the OTLP exporter for logs
-export OTEL_LOGS_EXPORTER="otlp"
-
-# Choose transport protocol: http/protobuf (default) or grpc
-export OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
-
-# Point to your OpenTelemetry collector endpoint (port 4318 for http, 4317 for grpc)
-export OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:4318"
-
-# Run the proxy
-claudine start
-```
-For quick debugging, you can also export directly to the console by setting an exporter to `console`.
+See [docs/observability.md](docs/observability.md) for details.
 
 ## Performance
 
