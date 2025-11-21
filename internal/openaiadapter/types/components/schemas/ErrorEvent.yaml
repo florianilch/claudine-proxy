@@ -1,0 +1,16 @@
+description: >-
+  Occurs when an [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs. This
+  can happen due to an internal server error or a timeout.
+properties:
+  event:
+    type: string
+    x-enum-varnames:
+      - ErrorEventEventError
+    enum:
+      - error
+  data:
+    allOf:
+      - $ref: Error.yaml
+required:
+  - event
+  - data

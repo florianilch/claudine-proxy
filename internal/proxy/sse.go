@@ -21,10 +21,19 @@ var commentReplacer = strings.NewReplacer(
 	"\r", "\\r",
 )
 
+// fieldReplacer escapes newlines in SSE field values.
+// These fields should be single-line values.
+var fieldReplacer = strings.NewReplacer(
+	"\n", "\\n",
+	"\r", "\\r",
+)
+
 // Pre-allocated byte slices for SSE formatting to eliminate allocations on every write.
 var (
 	sseDataPrefix    = []byte("data: ")
 	sseCommentPrefix = []byte(": ")
+	sseEventPrefix   = []byte("event: ")
+	sseNewline       = []byte("\n")
 	sseTerminator    = []byte("\n\n")
 )
 
@@ -77,6 +86,24 @@ func (s *SSEWriter) WriteData(v any) error {
 	}
 
 	s.flusher.Flush()
+	return nil
+}
+
+// WriteEvent writes an SSE event type field.
+// Must be followed by WriteData or manual terminator to dispatch the event.
+func (s *SSEWriter) WriteEvent(eventType string) error {
+	if _, err := s.w.Write(sseEventPrefix); err != nil {
+		return err
+	}
+
+	if _, err := fieldReplacer.WriteString(s.w, eventType); err != nil {
+		return err
+	}
+
+	if _, err := s.w.Write(sseNewline); err != nil {
+		return err
+	}
+
 	return nil
 }
 

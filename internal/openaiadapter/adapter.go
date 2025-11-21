@@ -43,3 +43,11 @@ type (
 		CreateChatCompletionChunk,
 	]
 )
+
+// Type aliases for OpenAI-compatible error responses.
+// Error types are generated from OpenAPI spec (see types package).
+type (
+	Error         = types.Error
+	ErrorResponse = types.ErrorResponse
+	ErrorEvent    = types.ErrorEvent
+)

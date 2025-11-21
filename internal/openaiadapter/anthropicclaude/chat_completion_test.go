@@ -12,7 +12,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/florianilch/claudine-proxy/internal/openaiadapter"
 	"github.com/florianilch/claudine-proxy/internal/openaiadapter/anthropicclaude"
 	"github.com/florianilch/claudine-proxy/internal/openaiadapter/types"
 )
@@ -188,9 +187,9 @@ func TestCreateChatCompletionAdapter_Buffered(t *testing.T) {
 
 				// Handle both success and error responses
 				if err != nil {
-					var errorResponse *openaiadapter.ChatCompletionErrorResponse
+					var errorResponse *types.ErrorResponse
 					if !errors.As(err, &errorResponse) {
-						t.Fatalf("Expected ChatCompletionErrorResponse, got: %T", err)
+						t.Fatalf("Expected types.ErrorResponse, got: %T", err)
 					}
 					gotResponse, marshalErr := json.Marshal(errorResponse)
 					if marshalErr != nil {
@@ -248,9 +247,9 @@ func TestCreateChatCompletionAdapter_Streaming(t *testing.T) {
 				var chunks []string
 				for chunk, err := range stream {
 					if err != nil {
-						var errorResponse *openaiadapter.ChatCompletionErrorResponse
+						var errorResponse *types.ErrorResponse
 						if !errors.As(err, &errorResponse) {
-							t.Fatalf("Expected ChatCompletionErrorResponse, got: %T", err)
+							t.Fatalf("Expected types.ErrorResponse, got: %T", err)
 						}
 						chunkJSON, marshalErr := json.Marshal(errorResponse)
 						if marshalErr != nil {

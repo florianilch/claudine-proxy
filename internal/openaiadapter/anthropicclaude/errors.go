@@ -8,42 +8,39 @@ import (
 
 	"github.com/anthropics/anthropic-sdk-go"
 
-	"github.com/florianilch/claudine-proxy/internal/openaiadapter"
+	"github.com/florianilch/claudine-proxy/internal/openaiadapter/types"
 )
 
 // toChatCompletionError converts any error into OpenAI-compatible error format.
 // Anthropic SDK returns different error shapes for streaming vs non-streaming requests,
-// so we normalize both into a consistent ChatCompletionErrorResponse for SSE/JSON responses.
+// so we normalize both into a consistent ErrorResponse for SSE/JSON responses.
 // Non-Anthropic errors (network, timeouts) are wrapped as generic server_error.
-func toChatCompletionError(err error) *openaiadapter.ChatCompletionErrorResponse {
+func toChatCompletionError(err error) *types.ErrorResponse {
 	if err == nil {
 		return nil
 	}
 
 	// Note: Anthropic error responses don't include 'code' or 'param' fields,
-	// so these are always empty in the OpenAI-compatible response.
-	var chatErr *openaiadapter.ChatCompletionError
+	// so these are always nil in the OpenAI-compatible response.
 
 	// Non-streaming: *anthropic.Error provides structured error via RawJSON()
 	var apiErr *anthropic.Error
 	if errors.As(err, &apiErr) {
 		if errorResp, parseErr := parseErrorResponseJSON(apiErr.RawJSON()); parseErr == nil {
-			chatErr = &openaiadapter.ChatCompletionError{
-				Message: errorResp.Error.Message,
-				Type:    mapAnthropicErrorType(errorResp.Error.Type),
-				Code:    "",
-				Param:   "",
-			}
-		} else {
-			// JSON parse failed, fallback to generic error wrapping
-			chatErr = &openaiadapter.ChatCompletionError{
-				Message: apiErr.Error(),
-				Type:    "api_error",
-				Code:    "",
-				Param:   "",
+			return &types.ErrorResponse{
+				Err: types.Error{
+					Message: errorResp.Error.Message,
+					Type:    mapAnthropicErrorType(errorResp.Error.Type),
+				},
 			}
 		}
-		return &openaiadapter.ChatCompletionErrorResponse{Err: chatErr}
+		// JSON parse failed, fallback to generic error wrapping
+		return &types.ErrorResponse{
+			Err: types.Error{
+				Message: apiErr.Error(),
+				Type:    "api_error",
+			},
+		}
 	}
 
 	// streamingErrorPrefix is the prefix used by the Anthropic SDK when wrapping streaming errors.
@@ -52,24 +49,22 @@ func toChatCompletionError(err error) *openaiadapter.ChatCompletionErrorResponse
 	// Streaming: SDK embeds JSON in error string with known prefix
 	if jsonStr, ok := strings.CutPrefix(err.Error(), streamingErrorPrefix); ok {
 		if errorResp, parseErr := parseErrorResponseJSON(jsonStr); parseErr == nil {
-			chatErr = &openaiadapter.ChatCompletionError{
-				Message: errorResp.Error.Message,
-				Type:    mapAnthropicErrorType(errorResp.Error.Type),
-				Code:    "",
-				Param:   "",
+			return &types.ErrorResponse{
+				Err: types.Error{
+					Message: errorResp.Error.Message,
+					Type:    mapAnthropicErrorType(errorResp.Error.Type),
+				},
 			}
-			return &openaiadapter.ChatCompletionErrorResponse{Err: chatErr}
 		}
 	}
 
 	// Fallback: wrap non-Anthropic errors (network, timeouts, etc.) as generic server_error
-	chatErr = &openaiadapter.ChatCompletionError{
-		Message: err.Error(),
-		Type:    "server_error",
-		Code:    "",
-		Param:   "",
+	return &types.ErrorResponse{
+		Err: types.Error{
+			Message: err.Error(),
+			Type:    "server_error",
+		},
 	}
-	return &openaiadapter.ChatCompletionErrorResponse{Err: chatErr}
 }
 
 // parseErrorResponseJSON parses Anthropic error JSON into structured ErrorResponse.
@@ -90,6 +85,8 @@ func mapAnthropicErrorType(anthropicType string) string {
 	case "rate_limit_error":
 		return "rate_limit_error"
 	case "invalid_request_error":
+		return "invalid_request_error"
+	case "request_too_large":
 		return "invalid_request_error"
 	case "authentication_error":
 		return "authentication_error"

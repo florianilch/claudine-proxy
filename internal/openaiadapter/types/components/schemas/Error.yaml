@@ -1,0 +1,18 @@
+properties:
+  code:
+    type: string
+    nullable: true
+    x-omitempty: true
+  message:
+    type: string
+  param:
+    type: string
+    nullable: true
+    x-omitempty: true
+  type:
+    type: string
+required:
+  - type
+  - message
+  - param
+  - code
