@@ -16,6 +16,14 @@ post:
             $ref: ../components/schemas/CreateChatCompletionResponse.yaml
         text/event-stream:
           schema:
-            $ref: ../components/schemas/CreateChatCompletionStreamResponse.yaml
+            oneOf:
+              - $ref: ../components/schemas/CreateChatCompletionStreamResponse.yaml
+              - $ref: ../components/schemas/ErrorEvent.yaml
+    default:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml
   tags:
     - Chat

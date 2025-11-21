@@ -5,12 +5,9 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
-)
 
-// ErrorResponse represents a JSON error response.
-type ErrorResponse struct {
-	Error string `json:"error"`
-}
+	"github.com/florianilch/claudine-proxy/internal/openaiadapter"
+)
 
 // writeJSON writes a JSON response with the given status code.
 // Logs encoding failures internally using the provided context.
@@ -24,8 +21,29 @@ func writeJSON(ctx context.Context, w http.ResponseWriter, data any, status int)
 	}
 }
 
-// writeJSONError writes a JSON error response with the given status code.
-// Similar to http.Error but returns JSON instead of plain text.
-func writeJSONError(ctx context.Context, w http.ResponseWriter, message string, status int) {
-	writeJSON(ctx, w, ErrorResponse{Error: message}, status)
+// writeJSONOpenAIError writes an OpenAI-compatible error response with the appropriate HTTP status code.
+// The status code is determined from the error type according to OpenAI API conventions.
+func writeJSONOpenAIError(ctx context.Context, w http.ResponseWriter, errResp *openaiadapter.ErrorResponse) {
+	// Map OpenAI error types to HTTP status codes
+	var status int
+	switch errResp.Err.Type {
+	case "invalid_request_error":
+		status = http.StatusBadRequest
+	case "authentication_error":
+		status = http.StatusUnauthorized
+	case "permission_denied":
+		status = http.StatusForbidden
+	case "rate_limit_error":
+		status = http.StatusTooManyRequests
+	case "insufficient_quota":
+		status = http.StatusTooManyRequests
+	case "server_error":
+		status = http.StatusInternalServerError
+	case "api_error":
+		status = http.StatusInternalServerError
+	default:
+		status = http.StatusInternalServerError
+	}
+
+	writeJSON(ctx, w, errResp, status)
 }

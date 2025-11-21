@@ -1,0 +1,7 @@
+properties:
+  error:
+    x-go-name: Err
+    allOf:
+      - $ref: Error.yaml
+required:
+  - error

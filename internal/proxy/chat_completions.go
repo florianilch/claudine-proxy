@@ -9,7 +9,6 @@ import (
 
 	"github.com/florianilch/claudine-proxy/internal/openaiadapter"
 	"github.com/florianilch/claudine-proxy/internal/openaiadapter/anthropicclaude"
-	"github.com/florianilch/claudine-proxy/internal/openaiadapter/types"
 )
 
 // CreateChatCompletionsHandler handles OpenAI-compatible chat completion requests.
@@ -25,16 +24,26 @@ var _ http.Handler = (*CreateChatCompletionsHandler)(nil)
 func (h *CreateChatCompletionsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req types.CreateChatCompletionRequest
+	var req openaiadapter.CreateChatCompletionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		var maxBytesErr *http.MaxBytesError
 		if errors.As(err, &maxBytesErr) {
 			slog.WarnContext(ctx, "request exceeds size limit", "limit_bytes", maxBytesErr.Limit)
-			writeJSONError(ctx, w, http.StatusText(http.StatusRequestEntityTooLarge), http.StatusRequestEntityTooLarge)
+			writeJSONOpenAIError(ctx, w, &openaiadapter.ErrorResponse{
+				Err: openaiadapter.Error{
+					Message: http.StatusText(http.StatusRequestEntityTooLarge),
+					Type:    "invalid_request_error",
+				},
+			})
 			return
 		}
 		slog.ErrorContext(ctx, "failed to decode request", "error", err)
-		writeJSONError(ctx, w, "invalid request body", http.StatusBadRequest)
+		writeJSONOpenAIError(ctx, w, &openaiadapter.ErrorResponse{
+			Err: openaiadapter.Error{
+				Message: http.StatusText(http.StatusBadRequest),
+				Type:    "invalid_request_error",
+			},
+		})
 		return
 	}
 
@@ -49,7 +58,7 @@ func (h *CreateChatCompletionsHandler) ServeHTTP(w http.ResponseWriter, r *http.
 func (h *CreateChatCompletionsHandler) writeResponse(
 	ctx context.Context,
 	w http.ResponseWriter,
-	req types.CreateChatCompletionRequest,
+	req openaiadapter.CreateChatCompletionRequest,
 ) {
 	if ctx.Err() != nil {
 		return
@@ -57,7 +66,19 @@ func (h *CreateChatCompletionsHandler) writeResponse(
 	response, err := h.Adapter.ProcessRequest(ctx, req, h.Transport)
 	if err != nil {
 		slog.ErrorContext(ctx, "request failed", "error", err)
-		writeJSONError(ctx, w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+
+		var errResp *openaiadapter.ErrorResponse
+		if errors.As(err, &errResp) {
+			writeJSONOpenAIError(ctx, w, errResp)
+			return
+		}
+
+		writeJSONOpenAIError(ctx, w, &openaiadapter.ErrorResponse{
+			Err: openaiadapter.Error{
+				Message: http.StatusText(http.StatusInternalServerError),
+				Type:    "api_error",
+			},
+		})
 		return
 	}
 
@@ -68,7 +89,7 @@ func (h *CreateChatCompletionsHandler) writeResponse(
 func (h *CreateChatCompletionsHandler) streamResponse(
 	ctx context.Context,
 	w http.ResponseWriter,
-	req types.CreateChatCompletionRequest,
+	req openaiadapter.CreateChatCompletionRequest,
 ) {
 	if ctx.Err() != nil {
 		return
@@ -76,14 +97,31 @@ func (h *CreateChatCompletionsHandler) streamResponse(
 	stream, err := h.Adapter.ProcessStreamingRequest(ctx, req, h.Transport)
 	if err != nil {
 		slog.ErrorContext(ctx, "streaming request failed", "error", err)
-		writeJSONError(ctx, w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+
+		var errResp *openaiadapter.ErrorResponse
+		if errors.As(err, &errResp) {
+			writeJSONOpenAIError(ctx, w, errResp)
+			return
+		}
+
+		writeJSONOpenAIError(ctx, w, &openaiadapter.ErrorResponse{
+			Err: openaiadapter.Error{
+				Message: http.StatusText(http.StatusInternalServerError),
+				Type:    "api_error",
+			},
+		})
 		return
 	}
 
 	sse, err := NewSSEWriter(w)
 	if err != nil {
 		slog.ErrorContext(ctx, "SSE not supported", "error", err)
-		writeJSONError(ctx, w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		writeJSONOpenAIError(ctx, w, &openaiadapter.ErrorResponse{
+			Err: openaiadapter.Error{
+				Message: http.StatusText(http.StatusInternalServerError),
+				Type:    "api_error",
+			},
+		})
 		return
 	}
 
@@ -97,16 +135,34 @@ func (h *CreateChatCompletionsHandler) streamResponse(
 		if err != nil {
 			slog.ErrorContext(ctx, "stream error", "error", err)
 
-			var errorResponse *openaiadapter.ChatCompletionErrorResponse
-			if !errors.As(err, &errorResponse) {
-				slog.ErrorContext(ctx, "unexpected error type", "error", err)
+			var errorResponse *openaiadapter.ErrorResponse
+			if errors.As(err, &errorResponse) {
+				// OpenAI SDK recognizes {"error": {...}} format and stops reading immediately
+				// https://github.com/openai/openai-go/blob/ae042a437e4ebef4dffe088bf01d087ac94feaf2/packages/ssestream/ssestream.go#L169-L173
+				if writeErr := sse.WriteEvent("error"); writeErr != nil {
+					slog.ErrorContext(ctx, "failed to write error event type", "error", writeErr)
+					return
+				}
+				if writeErr := sse.WriteData(errorResponse); writeErr != nil {
+					slog.ErrorContext(ctx, "failed to write error", "error", writeErr)
+				}
 				return
 			}
 
-			// OpenAI SDK recognizes {"error": {...}} format and stops reading immediately
-			// https://github.com/openai/openai-go/blob/ae042a437e4ebef4dffe088bf01d087ac94feaf2/packages/ssestream/ssestream.go#L169-L173
-			if writeErr := sse.WriteData(errorResponse); writeErr != nil {
-				slog.ErrorContext(ctx, "failed to write error", "error", writeErr)
+			// Fallback: wrap unexpected errors for client visibility
+			slog.ErrorContext(ctx, "unexpected error type, wrapping in fallback", "error", err)
+			fallbackErr := &openaiadapter.ErrorResponse{
+				Err: openaiadapter.Error{
+					Message: err.Error(),
+					Type:    "api_error",
+				},
+			}
+			if writeErr := sse.WriteEvent("error"); writeErr != nil {
+				slog.ErrorContext(ctx, "failed to write fallback error event type", "error", writeErr)
+				return
+			}
+			if writeErr := sse.WriteData(fallbackErr); writeErr != nil {
+				slog.ErrorContext(ctx, "failed to write fallback error", "error", writeErr)
 			}
 			return
 		}

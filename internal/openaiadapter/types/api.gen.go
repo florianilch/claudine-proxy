@@ -222,6 +222,11 @@ const (
 	CustomToolChatCompletionsTextFormatTypeText CustomToolChatCompletionsTextFormatType = "text"
 )
 
+// Defines values for ErrorEventEvent.
+const (
+	ErrorEventEventError ErrorEventEvent = "error"
+)
+
 // Defines values for PredictionContentType.
 const (
 	Content PredictionContentType = "content"
@@ -1187,6 +1192,28 @@ type CustomToolChatCompletionsTextFormat struct {
 
 // CustomToolChatCompletionsTextFormatType defines model for CustomToolChatCompletionsTextFormat.Type.
 type CustomToolChatCompletionsTextFormatType string
+
+// Error defines model for Error.
+type Error struct {
+	Code    *string `json:"code,omitempty"`
+	Message string  `json:"message"`
+	Param   *string `json:"param,omitempty"`
+	Type    string  `json:"type"`
+}
+
+// ErrorEvent Occurs when an [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs. This can happen due to an internal server error or a timeout.
+type ErrorEvent struct {
+	Data  Error           `json:"data"`
+	Event ErrorEventEvent `json:"event"`
+}
+
+// ErrorEventEvent defines model for ErrorEvent.Event.
+type ErrorEventEvent string
+
+// ErrorResponse defines model for ErrorResponse.
+type ErrorResponse struct {
+	Err Error `json:"error"`
+}
 
 // FunctionObject defines model for FunctionObject.
 type FunctionObject struct {
