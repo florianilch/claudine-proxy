@@ -131,7 +131,7 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 		Recovery,
 		middleware.TraceContextExtraction,
 		middleware.RequestIDGeneration,
-		RequestSizeLimit(100<<20),
+		RequestSizeLimit(33<<20), // Anthropic enforces 32MB
 		middleware.RequestIDPropagation,
 	))
 
@@ -141,7 +141,7 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 		Recovery,
 		middleware.TraceContextExtraction,
 		middleware.RequestIDGeneration,
-		RequestSizeLimit(100<<20),
+		RequestSizeLimit(31<<20), // proxy handles error
 		middleware.RequestIDPropagation,
 	))
 

@@ -27,6 +27,12 @@ func (h *CreateChatCompletionsHandler) ServeHTTP(w http.ResponseWriter, r *http.
 
 	var req types.CreateChatCompletionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		var maxBytesErr *http.MaxBytesError
+		if errors.As(err, &maxBytesErr) {
+			slog.WarnContext(ctx, "request exceeds size limit", "limit_bytes", maxBytesErr.Limit)
+			writeJSONError(ctx, w, http.StatusText(http.StatusRequestEntityTooLarge), http.StatusRequestEntityTooLarge)
+			return
+		}
 		slog.ErrorContext(ctx, "failed to decode request", "error", err)
 		writeJSONError(ctx, w, "invalid request body", http.StatusBadRequest)
 		return
