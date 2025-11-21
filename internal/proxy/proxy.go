@@ -145,6 +145,15 @@ func New(ts oauth2.TokenSource, health ReadinessChecker, opts ...Option) (*Proxy
 		middleware.RequestIDPropagation,
 	))
 
+	// Shared static Models API endpoint for OpenAI and Anthropic
+	mux.Handle("GET "+upstream.Path+"/models", applyMiddlewares(modelsHandler(),
+		middleware.Logging(logger),
+		Recovery,
+		middleware.TraceContextExtraction,
+		middleware.RequestIDGeneration,
+		middleware.RequestIDPropagation,
+	))
+
 	// Health check endpoints
 	mux.HandleFunc("GET /health/liveness", livenessHandler())
 	mux.HandleFunc("GET /health/readiness", readinessHandler(health))
