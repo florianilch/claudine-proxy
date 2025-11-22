@@ -334,7 +334,7 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			nil, // Usage comes in MessageDeltaEvent
 		), nil
 
-	// New content block begins (text/tool_use/thinking)
+	// New content block begins (text/tool_use/thinking/server_tool_use/web_search_tool_result)
 	case anthropic.ContentBlockStartEvent:
 		if eventType.ContentBlock.Type == "text" {
 			return nil, nil // Content comes in delta events
@@ -385,6 +385,18 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			), nil
 		}
 
+		// Skip server-side tool execution blocks (web search, etc.)
+		// These blocks mark server-side tool invocation but contain no user-visible content
+		if eventType.ContentBlock.Type == "server_tool_use" {
+			return nil, nil
+		}
+
+		// Skip web search result blocks in streaming
+		// Results are accumulated and converted to text in the final message via textFromAnthropicContentBlocks
+		if eventType.ContentBlock.Type == "web_search_tool_result" {
+			return nil, nil
+		}
+
 		return nil, nil // Non-mappable blocks (thinking, etc.)
 
 	// Incremental content: text fragments or tool JSON deltas
@@ -400,7 +412,10 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			// Retrieve OpenAI tool index from mapping created in ContentBlockStartEvent
 			toolMetadata, exists := streamingContext.AnthropicToolIndex[eventType.Index]
 			if !exists {
-				return nil, fmt.Errorf("received InputJSONDelta for unknown tool at index %d", eventType.Index)
+				// Skip InputJSONDelta for server-side tools (web search, etc.)
+				// These blocks are not registered in AnthropicToolIndex since they're
+				// executed server-side and have no corresponding client-side tool calls
+				return nil, nil
 			}
 
 			toolCall := types.ChatCompletionMessageToolCallChunk{

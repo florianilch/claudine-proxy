@@ -393,6 +393,22 @@ func textFromAnthropicContentBlocks(content []anthropic.ContentBlockUnion) strin
 			if variant.Text != "" {
 				texts = append(texts, variant.Text)
 			}
+		case anthropic.WebSearchToolResultBlock:
+			// Extract text representation from web search tool results
+			// The Content field can contain an array of WebSearchResultBlocks
+			searchResults := variant.Content.AsWebSearchResultBlockArray()
+			for _, result := range searchResults {
+				if result.Title != "" && result.URL != "" {
+					searchResult := fmt.Sprintf("[%s](%s)", result.Title, result.URL)
+					texts = append(texts, searchResult)
+				}
+			}
+			// If it's an error, the Content will have error details which we skip
+		case anthropic.ServerToolUseBlock:
+			// ServerToolUseBlock represents server-side tool execution (e.g., web search)
+			// Skip these blocks as they don't contain text content for the user
+			// The actual results will appear in WebSearchToolResultBlock
+			continue
 		}
 	}
 	return strings.Join(texts, "\n")
