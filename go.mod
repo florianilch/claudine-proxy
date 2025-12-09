@@ -1,6 +1,6 @@
 module github.com/florianilch/claudine-proxy
 
-go 1.25.3
+go 1.25.5
 
 require (
 	github.com/anthropics/anthropic-sdk-go v1.17.0
