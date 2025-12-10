@@ -7,6 +7,8 @@ import (
 	"encoding/json/jsontext"
 	"io"
 	"net/http"
+	"slices"
+	"strings"
 )
 
 const claudeCodeSystemPrompt = "You are Claude Code, Anthropic's official CLI for Claude."
@@ -15,6 +17,15 @@ var (
 	systemPromptElement = mustMarshal(map[string]string{"type": "text", "text": claudeCodeSystemPrompt})
 	systemPromptArray   = mustMarshal([]json.RawMessage{systemPromptElement})
 
+	// requiredBetaFeatures are beta features required for OAuth to work
+	requiredBetaFeatures = map[string]struct{}{
+		"oauth-2025-04-20":     {},
+		"claude-code-20250219": {},
+	}
+
+	// requiredBetaHeader is computed from requiredBetaFeatures at init time.
+	requiredBetaHeader = computeRequiredBetaHeader()
+
 	// allowedHeaders defines the HTTP headers permitted to pass through to the Anthropic API.
 	allowedHeaders = map[string]bool{
 		"Content-Type":    true,
@@ -22,6 +33,9 @@ var (
 		"Accept":          true,
 		"Accept-Encoding": true,
 		"Authorization":   true,
+
+		// Allow client-specified beta features (merged with required features)
+		"Anthropic-Beta": true,
 
 		// W3C Trace Context for distributed tracing correlation.
 		// Traceparent and Tracestate enable end-to-end trace propagation through the proxy.
@@ -61,9 +75,10 @@ func (t *ImpersonationTransport) RoundTrip(req *http.Request) (*http.Response, e
 		}
 	}
 
-	// Set required Anthropic API headers for impersonation
-	newReq.Header.Set("Anthropic-Beta", "oauth-2025-04-20,claude-code-20250219,interleaved-thinking-2025-05-14,fine-grained-tool-streaming-2025-05-14")
+	// Set required Anthropic API version and merge beta features
 	newReq.Header.Set("Anthropic-Version", "2023-06-01")
+	incomingBetaHeaderValue := newReq.Header.Get("Anthropic-Beta")
+	newReq.Header.Set("Anthropic-Beta", buildBetaHeader(incomingBetaHeaderValue))
 
 	// Skip body transformation for non-POST requests or requests without bodies
 	if req.Method != http.MethodPost || req.Body == nil {
@@ -217,6 +232,31 @@ func ensureSystemPrompt(enc *jsontext.Encoder, systemVal jsontext.Value) error {
 	return enc.WriteToken(jsontext.EndArray)
 }
 
+// buildBetaHeader constructs the Anthropic-Beta header by ensuring required features
+// are always present, then appending any additional client-specified features.
+// Uses package globals requiredBetaHeader and requiredBetaFeatures.
+func buildBetaHeader(headerValue string) string {
+	if headerValue == "" {
+		return requiredBetaHeader
+	}
+
+	var b strings.Builder
+	b.Grow(len(requiredBetaHeader) + len(headerValue))
+	b.WriteString(requiredBetaHeader)
+
+	for remaining := headerValue; remaining != ""; {
+		var feature string
+		feature, remaining, _ = strings.Cut(remaining, ",")
+		if feature = strings.TrimSpace(feature); feature != "" {
+			if _, exists := requiredBetaFeatures[feature]; !exists {
+				b.WriteByte(',')
+				b.WriteString(feature)
+			}
+		}
+	}
+	return b.String()
+}
+
 // mustMarshal marshals the value to JSON or panics.
 // Used for package-level initialization of system prompt constants.
 func mustMarshal(v any) []byte {
@@ -225,4 +265,15 @@ func mustMarshal(v any) []byte {
 		panic("failed to marshal system prompt: " + err.Error())
 	}
 	return data
+}
+
+// computeRequiredBetaHeader derives the comma-separated header value from requiredBetaFeatures.
+// Called at package initialization to compute requiredBetaHeader.
+func computeRequiredBetaHeader() string {
+	features := make([]string, 0, len(requiredBetaFeatures))
+	for feature := range requiredBetaFeatures {
+		features = append(features, feature)
+	}
+	slices.Sort(features)
+	return strings.Join(features, ",")
 }

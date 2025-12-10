@@ -451,6 +451,81 @@ func TestImpersonationTransportHeaderFiltering(t *testing.T) {
 	}
 }
 
+func TestImpersonationTransportFeatureMerging(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = io.Copy(io.Discard, r.Body)
+		w.Header().Set("X-Received-Beta", r.Header.Get("Anthropic-Beta"))
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"id":"test"}`))
+	}))
+	defer server.Close()
+
+	transport := &ImpersonationTransport{Base: http.DefaultTransport}
+	client := &http.Client{Transport: transport}
+
+	tests := []struct {
+		name         string
+		incomingBeta string
+		want         string
+	}{
+		{
+			name:         "no incoming beta - only required",
+			incomingBeta: "",
+			want:         "claude-code-20250219,oauth-2025-04-20",
+		},
+		{
+			name:         "incoming beta - merged with required",
+			incomingBeta: "fine-grained-tool-streaming-2025-05-14",
+			want:         "claude-code-20250219,oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14",
+		},
+		{
+			name:         "multiple incoming features - preserved in order",
+			incomingBeta: "fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14",
+			want:         "claude-code-20250219,oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14",
+		},
+		{
+			name:         "incoming duplicate - deduplicated",
+			incomingBeta: "oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14",
+			want:         "claude-code-20250219,oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14",
+		},
+		{
+			name:         "incoming with whitespace - trimmed",
+			incomingBeta: " custom-beta , another-beta ",
+			want:         "claude-code-20250219,oauth-2025-04-20,custom-beta,another-beta",
+		},
+		{
+			name:         "very long feature name - buffer handling",
+			incomingBeta: "very-long-feature-name-that-exceeds-normal-length-buffer-1234",
+			want:         "claude-code-20250219,oauth-2025-04-20,very-long-feature-name-that-exceeds-normal-length-buffer-1234",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req, err := http.NewRequest(http.MethodPost, server.URL, strings.NewReader(`{"model":"claude-3"}`))
+			if err != nil {
+				t.Fatalf("failed to create request: %v", err)
+			}
+
+			if tt.incomingBeta != "" {
+				req.Header.Set("Anthropic-Beta", tt.incomingBeta)
+			}
+			req.Header.Set("Content-Type", "application/json")
+
+			resp, err := client.Do(req)
+			if err != nil {
+				t.Fatalf("request failed: %v", err)
+			}
+			_ = resp.Body.Close()
+
+			got := resp.Header.Get("X-Received-Beta")
+			if got != tt.want {
+				t.Errorf("Anthropic-Beta = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func BenchmarkSystemInjector(b *testing.B) {
 	inputs := []struct {
 		name string
@@ -528,6 +603,52 @@ func BenchmarkSystemInjector(b *testing.B) {
 				if err := injectSystemPrompt(reader, output); err != nil {
 					b.Fatalf("Transform failed: %v", err)
 				}
+			}
+		})
+	}
+}
+
+func BenchmarkBuildBetaHeader(b *testing.B) {
+	tests := []struct {
+		name         string
+		incomingBeta string
+	}{
+		{
+			name:         "no_incoming",
+			incomingBeta: "",
+		},
+		{
+			name:         "single_new_feature",
+			incomingBeta: "custom-feature-2025-01-01",
+		},
+		{
+			name:         "multiple_new_features",
+			incomingBeta: "feature-one,feature-two,feature-three",
+		},
+		{
+			name:         "duplicate_required_feature",
+			incomingBeta: "oauth-2025-04-20",
+		},
+		{
+			name:         "mixed_duplicates_and_new",
+			incomingBeta: "oauth-2025-04-20,custom-beta,claude-code-20250219,another-feature",
+		},
+		{
+			name:         "with_whitespace",
+			incomingBeta: " feature-one , feature-two , feature-three ",
+		},
+		{
+			name:         "long_feature_names",
+			incomingBeta: "very-long-feature-name-that-tests-buffer-allocation-1234567890,another-long-feature-name-for-testing",
+		},
+	}
+
+	for _, tt := range tests {
+		b.Run(tt.name, func(b *testing.B) {
+			b.ReportAllocs()
+
+			for b.Loop() {
+				_ = buildBetaHeader(tt.incomingBeta)
 			}
 		})
 	}
