@@ -211,5 +211,80 @@
         "total_tokens": 113
       }
     }
+  },
+  {
+    "openaiRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": "What is the time complexity of quicksort?"}
+      ],
+      "reasoning_effort": "low",
+      "extra_body": {
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": "5000"
+        }
+      },
+      "max_completion_tokens": 1024
+    },
+    "anthropicRequest": {
+      "model": "claude-3-5-sonnet-20241022",
+      "messages": [
+        {"role": "user", "content": [{"type": "text", "text": "What is the time complexity of quicksort?"}]}
+      ],
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 5000
+      },
+      "max_tokens": 1024
+    },
+    "anthropicResponse": {
+      "id": "msg_01think004",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "thinking",
+          "thinking": "Average O(n log n), worst O(n²) with bad pivots."
+        },
+        {
+          "type": "text",
+          "text": "Quicksort has O(n log n) average-case time complexity and O(n²) worst-case when the pivot choices are poor."
+        }
+      ],
+      "model": "claude-3-5-sonnet-20241022",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 22,
+        "output_tokens": 78,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      }
+    },
+    "openaiResponse": {
+      "id": "msg_01think004",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "claude-3-5-sonnet-20241022",
+      "service_tier": null,
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Quicksort has O(n log n) average-case time complexity and O(n²) worst-case when the pivot choices are poor.",
+            "refusal": null
+          },
+          "finish_reason": "stop",
+          "logprobs": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 22,
+        "completion_tokens": 78,
+        "total_tokens": 100
+      }
+    }
   }
 ]

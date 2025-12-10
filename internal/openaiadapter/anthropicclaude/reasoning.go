@@ -2,6 +2,7 @@ package anthropicclaude
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/anthropics/anthropic-sdk-go"
 
@@ -45,9 +46,21 @@ func buildThinking(clientReq openaiadapter.CreateChatCompletionRequest) (anthrop
 			if typeVal, ok := thinkingConfig["type"].(string); ok {
 				switch typeVal {
 				case "enabled":
-					if budgetTokens, ok := thinkingConfig["budget_tokens"].(float64); ok {
-						// budget_tokens provided: use it
-						thinking = anthropic.ThinkingConfigParamOfEnabled(int64(budgetTokens))
+					var budgetTokens int64
+
+					switch v := thinkingConfig["budget_tokens"].(type) {
+					case float64:
+						budgetTokens = int64(v)
+					case string:
+						parsed, err := strconv.ParseInt(v, 10, 64)
+						if err != nil {
+							return thinking, fmt.Errorf("invalid budget_tokens: must be a valid integer")
+						}
+						budgetTokens = parsed
+					}
+
+					if budgetTokens > 0 {
+						thinking = anthropic.ThinkingConfigParamOfEnabled(budgetTokens)
 					} else {
 						// Require at least one budget source (reasoning_effort or budget_tokens)
 						if thinking.GetType() == nil {
