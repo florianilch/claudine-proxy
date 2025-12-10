@@ -338,6 +338,7 @@ func fromChatCompletionRequestToolMessage(msg types.ChatCompletionRequestToolMes
 		return nil, fmt.Errorf("extract tool message %d content format: %w", msgIndex, err)
 	}
 
+	// OpenAI schema currently only supports text in tool messages
 	resultText := textFromOpenAIContent(content)
 
 	// IMPORTANT: Unlike other message types, we NEVER skip tool messages, even if empty.
