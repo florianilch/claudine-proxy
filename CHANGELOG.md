@@ -1,5 +1,6 @@
 ## Unreleased
 ### <!-- 1 -->Fixes
+- Accept `budget_tokens` as string or number
 - Bump Go version to fix resource exhaustion vulnerabilities
 
 ## 0.5.0 - 2025-11-22
