@@ -13,7 +13,7 @@ require (
 	github.com/knadh/koanf/providers/file v1.2.0
 	github.com/knadh/koanf/v2 v2.3.0
 	github.com/oapi-codegen/runtime v1.1.2
-	github.com/urfave/cli/v3 v3.5.0
+	github.com/urfave/cli/v3 v3.6.1
 	github.com/zalando/go-keyring v0.2.6
 	go.opentelemetry.io/contrib/bridges/otelslog v0.13.0
 	go.opentelemetry.io/contrib/processors/minsev v0.11.0
