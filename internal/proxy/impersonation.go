@@ -78,7 +78,7 @@ func (t *ImpersonationTransport) RoundTrip(req *http.Request) (*http.Response, e
 	// the request, it closes pr, which unblocks all writes to pw with ErrClosedPipe.
 	go func() {
 		err := injectSystemPrompt(req.Body, pw)
-		// CloseWithError(nil) is equivalent to Close() but allows error handling
+		// Propagate transformation error (if any) or signal success to reader
 		pw.CloseWithError(err)
 		_ = req.Body.Close()
 	}()
