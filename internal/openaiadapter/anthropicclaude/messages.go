@@ -344,6 +344,10 @@ func fromChatCompletionRequestToolMessage(msg types.ChatCompletionRequestToolMes
 	// Tool results can legitimately be empty (void functions, delete operations, etc.),
 	// and the tool_call_id is required to close the tool invocation loop with Anthropic.
 	// Skipping would break the assistant's tool calling flow.
+
+	// is_error field limitation: OpenAI spec has no standard field to indicate tool execution errors.
+	// Anthropic supports is_error to distinguish successful vs failed tool executions, allowing
+	// Claude to retry with corrections. Without OpenAI equivalent, we always set false.
 	toolResultBlock := anthropic.NewToolResultBlock(msg.ToolCallId, resultText, false)
 
 	msgParam := anthropic.NewUserMessage(toolResultBlock)
