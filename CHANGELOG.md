@@ -1,5 +1,6 @@
 ## Unreleased
 ### <!-- 0 -->Features
+- Update static model list to include Claude Opus 4.5
 - Enable extensible beta feature flags for clients
 
 ### <!-- 1 -->Fixes
