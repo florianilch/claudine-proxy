@@ -4,6 +4,15 @@
     {
       "type": "model",
       "object": "model",
+      "id": "claude-opus-4-5-20251101",
+      "display_name": "Claude Opus 4.5",
+      "created_at": "2025-11-24T00:00:00Z",
+      "created": 1763942400,
+      "owned_by": "anthropic"
+    },
+    {
+      "type": "model",
+      "object": "model",
       "id": "claude-haiku-4-5-20251001",
       "display_name": "Claude Haiku 4.5",
       "created_at": "2025-10-15T00:00:00Z",
@@ -75,6 +84,6 @@
     }
   ],
   "has_more": false,
-  "first_id": "claude-haiku-4-5-20251001",
+  "first_id": "claude-opus-4-5-20251101",
   "last_id": "claude-3-haiku-20240307"
 }
