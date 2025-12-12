@@ -2,6 +2,7 @@ package anthropicclaude
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/anthropics/anthropic-sdk-go"
@@ -162,14 +163,45 @@ func buildGenerationParams(
 	}
 
 	// WebSearchOptions transformation: OpenAI's WebSearchOptions enables web search via client
-	// request parameter. Anthropic supports web search via server tools (WebSearchTool20250305)
-	// that return ServerToolUseBlock and WebSearchResultBlock content types in responses.
-	// These server-side tool blocks cannot be mapped to OpenAI's response format, which only
-	// supports client-side tool calls. In multi-turn conversations, when the client sends
-	// previous assistant messages back in history, we cannot reconstruct the original
-	// ServerToolUseBlock/WebSearchResultBlock content - breaking conversation continuity.
-	// This is an architectural incompatibility between server-side tools (Anthropic) and
-	// client-side only tools (OpenAI).
+	// request parameter. Anthropic supports web search via server tools (WebSearchTool20250305).
+	// While server-side tool blocks cannot be fully mapped to OpenAI's response format,
+	// we enable web search by injecting the tool and extracting text from web search results.
+	//
+	// Web search is enabled when:
+	// 1. OpenAI request includes WebSearchOptions, OR
+	// 2. CLAUDINE_ENABLE_WEB_SEARCH environment variable is set to "true"
+	enableWebSearch := clientReq.WebSearchOptions != nil || os.Getenv("CLAUDINE_ENABLE_WEB_SEARCH") == "true"
+
+	if enableWebSearch {
+		webSearchToolParam := anthropic.WebSearchTool20250305Param{
+			// Required fields will use their default values
+			// Name defaults to "web_search"
+			// Type defaults to "web_search_20250305"
+		}
+
+		// Map OpenAI's user location to Anthropic's format if provided
+		if clientReq.WebSearchOptions != nil && clientReq.WebSearchOptions.UserLocation != nil {
+			userLoc := anthropic.WebSearchTool20250305UserLocationParam{}
+			if clientReq.WebSearchOptions.UserLocation.Approximate.City != nil {
+				userLoc.City = anthropic.String(*clientReq.WebSearchOptions.UserLocation.Approximate.City)
+			}
+			webSearchToolParam.UserLocation = userLoc
+		}
+
+		// Note: OpenAI's SearchContextSize has no direct equivalent in Anthropic's web search tool.
+		// It controls context window allocation, which Anthropic manages automatically.
+
+		webSearchTool := anthropic.ToolUnionParam{
+			OfWebSearchTool20250305: &webSearchToolParam,
+		}
+
+		// Inject web search tool alongside any existing tools
+		if params.Tools == nil {
+			params.Tools = []anthropic.ToolUnionParam{webSearchTool}
+		} else {
+			params.Tools = append(params.Tools, webSearchTool)
+		}
+	}
 
 	return params, nil
 }
