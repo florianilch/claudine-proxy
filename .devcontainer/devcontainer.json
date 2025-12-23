@@ -2,7 +2,7 @@
   "name": "claude proxy",
 
   // https://github.com/devcontainers/images/tree/main/src/go
-  "image": "mcr.microsoft.com/devcontainers/go:dev-1.25-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/go:2-1.25-bookworm",
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
