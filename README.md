@@ -108,7 +108,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 ## Supported Tools & Editors
 
-Any tool that supports BYOM (Bring Your Own Models) with OpenAI-compatible endpoints works with Claudine. Here are a few popular examples:
+Any tool that supports BYOM (Bring Your Own Models) with OpenAI chat completion or native Anthropic messages endpoints works with Claudine. Here are a few popular examples:
 
 ### [Jan.ai](https://www.jan.ai/)
 
@@ -158,19 +158,13 @@ providers:
 
 ![Raycast 3](assets/raycast_3.png)
 
-#### Most IDEs
+### Other Tools & IDEs
 
-```jsonc
-// Example for Cursor
-{
-  "models": [{
-    "model": "claude-sonnet-4-0",
-    "apiBase": "http://localhost:4000/v1",
-    "apiKey": "claudine"
-    // ...
-  }]
-}
-```
+Many tools work out of the box. As long as they support OpenAI chat completion or native Anthropic messages endpoints, you are good to go.
+
+Point the base URL to the proxy and use any API key.
+
+_Note: Cloud-based services may need extra setup, like tunneling, when you want to run Claudine as a local sidecar._
 
 ## Configuration
 
