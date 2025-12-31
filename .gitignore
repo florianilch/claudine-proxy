@@ -23,6 +23,7 @@ logs/
 *.dylib
 bin/
 dist/
+claudine
 
 # Test binary, built with `go test -c`
 *.test

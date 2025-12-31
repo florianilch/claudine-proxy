@@ -45,6 +45,21 @@ type StreamingResponseContext struct {
 	// Stores ID and name for initial chunk emission during tool_use blocks.
 	AnthropicToolIndex map[int64]ToolIndexMapping
 
+	// WebSearchResults stores URLs from web search results for citation mapping.
+	// Maps encrypted index to URL for inline citation generation.
+	WebSearchResults map[string]string
+
+	// CitationURLToNumber maps citation URLs to their assigned citation numbers.
+	// Used to generate consistent inline citations like [1], [2], etc.
+	CitationURLToNumber map[string]int
+
+	// NextCitationNumber tracks the next available citation number to assign.
+	NextCitationNumber int
+
+	// JustFinishedWebSearch tracks if we just processed web search results.
+	// Used to add proper spacing before the next text block.
+	JustFinishedWebSearch bool
+
 	// AnthropicMessage accumulates message metadata via selective Accumulate() calls.
 	// Only MessageStart/MessageDelta events are accumulated to avoid expensive content arrays.
 	AnthropicMessage anthropic.Message
@@ -98,8 +113,11 @@ func (a *CreateChatCompletionAdapter) ProcessStreamingRequest(
 		defer func() { _ = stream.Close() }()
 
 		streamingContext := StreamingResponseContext{
-			NextToolCallIndex:  0,
-			AnthropicToolIndex: make(map[int64]ToolIndexMapping),
+			NextToolCallIndex:   0,
+			AnthropicToolIndex:  make(map[int64]ToolIndexMapping),
+			WebSearchResults:    make(map[string]string),
+			CitationURLToNumber: make(map[string]int),
+			NextCitationNumber:  1,
 		}
 
 		for stream.Next() {
@@ -334,7 +352,7 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			nil, // Usage comes in MessageDeltaEvent
 		), nil
 
-	// New content block begins (text/tool_use/thinking)
+	// New content block begins (text/tool_use/thinking/server_tool_use/web_search_tool_result)
 	case anthropic.ContentBlockStartEvent:
 		if eventType.ContentBlock.Type == "text" {
 			return nil, nil // Content comes in delta events
@@ -385,6 +403,37 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			), nil
 		}
 
+		// Skip server-side tool execution blocks (web search, etc.)
+		// These blocks mark server-side tool invocation but contain no user-visible content
+		if eventType.ContentBlock.Type == "server_tool_use" {
+			return nil, nil
+		}
+
+		// Handle web search result blocks in streaming
+		// Store URLs for later inline citation generation
+		if eventType.ContentBlock.Type == "web_search_tool_result" {
+			webSearchBlock := eventType.ContentBlock.AsWebSearchToolResult()
+			searchResults := webSearchBlock.Content.AsWebSearchResultBlockArray()
+
+			// Store each result's URL mapped by its encrypted index for citation lookups
+			for _, result := range searchResults {
+				if result.URL != "" && result.EncryptedContent != "" {
+					streamingContext.WebSearchResults[result.EncryptedContent] = result.URL
+				}
+			}
+
+			// Mark that we just finished web search to add spacing before next text
+			streamingContext.JustFinishedWebSearch = true
+
+			// Don't output anything here - citations will be added inline via CitationsDelta
+			return nil, nil
+		}
+
+		// Handle text blocks - content comes in delta events
+		if eventType.ContentBlock.Type == "text" {
+			return nil, nil
+		}
+
 		return nil, nil // Non-mappable blocks (thinking, etc.)
 
 	// Incremental content: text fragments or tool JSON deltas
@@ -394,13 +443,22 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 		switch deltaVariant := eventType.Delta.AsAny().(type) {
 		case anthropic.TextDelta:
 			if deltaVariant.Text != "" {
-				delta.Content = &deltaVariant.Text
+				text := deltaVariant.Text
+				// Add newline before first text after web search results
+				if streamingContext.JustFinishedWebSearch {
+					text = "\n\n" + text
+					streamingContext.JustFinishedWebSearch = false
+				}
+				delta.Content = &text
 			}
 		case anthropic.InputJSONDelta:
 			// Retrieve OpenAI tool index from mapping created in ContentBlockStartEvent
 			toolMetadata, exists := streamingContext.AnthropicToolIndex[eventType.Index]
 			if !exists {
-				return nil, fmt.Errorf("received InputJSONDelta for unknown tool at index %d", eventType.Index)
+				// Skip InputJSONDelta for server-side tools (web search, etc.)
+				// These blocks are not registered in AnthropicToolIndex since they're
+				// executed server-side and have no corresponding client-side tool calls
+				return nil, nil
 			}
 
 			toolCall := types.ChatCompletionMessageToolCallChunk{
@@ -424,8 +482,31 @@ func (a *CreateChatCompletionAdapter) transformStreamEvent(
 			// Skip: would break round-trips (clients would echo thinking as regular messages)
 			return nil, nil
 		case anthropic.CitationsDelta:
-			// Skip: no OpenAI equivalent
-			return nil, nil
+			// Handle inline citations for web search results
+			citation := deltaVariant.Citation.AsAny()
+
+			// Only handle web search result citations
+			if webSearchCitation, ok := citation.(anthropic.CitationsWebSearchResultLocation); ok {
+				url := webSearchCitation.URL
+				if url == "" {
+					return nil, nil
+				}
+
+				// Get or assign a citation number for this URL
+				citationNum, exists := streamingContext.CitationURLToNumber[url]
+				if !exists {
+					citationNum = streamingContext.NextCitationNumber
+					streamingContext.CitationURLToNumber[url] = citationNum
+					streamingContext.NextCitationNumber++
+				}
+
+				// Generate inline citation: [[N]](URL) displays as [N] with space after
+				content := fmt.Sprintf("[[%d]](%s) ", citationNum, url)
+				delta.Content = &content
+			} else {
+				// Skip non-web-search citations
+				return nil, nil
+			}
 		case anthropic.SignatureDelta:
 			// Skip: no OpenAI equivalent
 			return nil, nil
