@@ -1,39 +1,29 @@
-<h1>
-  <picture>
-    <source width="466" media="(prefers-color-scheme: dark)" srcset="assets/banner.gif">
-    <img width="466" alt="claudine" src="assets/banner.gif">
-  </picture>
-</h1>
+# claudine
 
-<br />
+> [!IMPORTANT]
+> **Archived** This project explored pragmatic ways to connect personal assistants with the existing OpenAI-compatible ecosystem. The provider’s technical landscape has since evolved and its access policies refined. Third-party access is now exclusively handled via API keys which can be obtained from platforms like [Claude Console](https://platform.claude.com/), [AWS Bedrock](https://aws.amazon.com/bedrock/) or [Google Vertex AI](https://cloud.google.com/vertex-ai).
 
-<p><b>Use Your Claude Subscription Everywhere</b></p>
-<p>
-  <b>Claudine</b> is a lightweight, session-free OAuth ambassador for Claude. It is designed for low-latency streaming and can be deployed as a local sidecar or as a shared service for development.
-  <br /><br />
-</p>
+<br>
 
----
+This repository contains the source for `claudine`, a lightweight proxy to act as a session-free OAuth ambassador for Claude with a focus on low-latency streaming for local development. The design included the following key features:
 
-✅ **OpenAI Compatibility:** A drop-in, OpenAI-compatible endpoint for `v1/chat/completions` makes integration with existing **OpenAI SDK** and tools like **Jan.ai** or **Raycast** zero-effort.
+*   **OpenAI Compatibility:** Provided a drop-in, OpenAI-compatible endpoint for `v1/chat/completions` to facilitate zero-effort integration with existing OpenAI SDKs and tools.
+*   **Resilient Authentication:** Handled OAuth2 flow and token refreshes, which ensured connections remained long-lived and stable.
+*   **Privacy by Design:** Designed as a pass-through proxy; never logged credentials or request/response bodies.
+*   **Observability:** Structured JSON logs with built-in trace correlation using W3C Trace Context.
 
-✅ **Resilient Authentication:** Handles OAuth2 flow and token refresh, ensuring connections are long-lived and stable.
-
-✅ **Privacy by Design:** Designed as a pass-through proxy; never logs credentials or request/response bodies.
-
-✅ **Designed for Observability:** Structured JSON logs with built-in trace correlation using W3C Trace Context.
+<br>
 
 ---
 
-<br />
+<br>
 
-<p>
-<a href="https://github.com/florianilch/claudine-proxy/releases/latest"><img src="https://img.shields.io/github/v/release/florianilch/claudine-proxy?style=flat&logo=GitHub&labelColor=1C2C2E&color=44CC11"></a>
-<a href="https://github.com/florianilch/claudine-proxy/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/florianilch/claudine-proxy/ci.yml?style=flat&labelColor=1C2C2E&color=BEC5C9"></a>
-<br /><br />
-</p>
+## 60-Second Quick Start
 
-## 🚀 60-Second Quick Start
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 **1. Install**
 
@@ -60,7 +50,14 @@ claudine start
 ```
 Claudine is now running at `http://localhost:4000`.
 
+</details>
+
 ## Usage
+
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 Point any client or SDK at `http://localhost:4000`.
 
@@ -106,7 +103,14 @@ curl http://localhost:4000/v1/chat/completions \
 - Set `api_key` to any value (proxy handles auth)
 - See [OpenAI Python SDK](https://github.com/openai/openai-python) or [Node.js SDK](https://github.com/openai/openai-node)
 
+</details>
+
 ## Supported Tools & Editors
+
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 Any tool that supports BYOM (Bring Your Own Models) with OpenAI chat completion or native Anthropic messages endpoints works with Claudine. Here are a few popular examples:
 
@@ -166,7 +170,14 @@ Point the base URL to the proxy and use any API key.
 
 _Note: Cloud-based services may need extra setup, like tunneling, when you want to run Claudine as a local sidecar._
 
+</details>
+
 ## Configuration
+
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 Claudine works out-of-the-box. Customize it with CLI flags, environment variables or a config file.
 
@@ -239,13 +250,27 @@ Claudine securely handles your auth details.
 | `file`    | Plain-text file. Good for systems without a native keychain. |
 | `env`     | Reads from an env var. Escape hatch for ephemeral environments like CI/CD – won't auto-refresh. |
 
+</details>
+
 ## Observability & Health Checks
+
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 Claudine is built to be a good citizen in modern infrastructure, not a black box. It propagates W3C Trace Context headers and emits structured JSON logs to seamlessly integrate with your existing observability platforms.
 
 See [docs/observability.md](docs/observability.md) for details.
 
+</details>
+
 ## Performance
+
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
 
 Claudine is designed to add minimal overhead to your API calls:
 
@@ -254,11 +279,4 @@ Claudine is designed to add minimal overhead to your API calls:
 
 *Benchmarks run with a mocked upstream to isolate proxy overhead. Run `make bench` to test on your own hardware.*
 
-## Requirements
-
-*   A **Claude Pro** or **Claude Max** subscription.
-*   **To build from source:** Go 1.25+ with `GOEXPERIMENT=jsonv2` enabled.
-
-## Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+</details>

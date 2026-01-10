@@ -1,5 +1,10 @@
 # Observability & Health Checks
 
+<details>
+<summary><b>Archived:</b> For historical reference only.</summary>
+
+<br>
+
 Claudine provides health endpoints and structured log export with W3C Trace Context propagation.
 
 ## Health Endpoints
@@ -35,3 +40,5 @@ claudine start
 ```
 
 For quick debugging, you can also export directly to the console by setting `OTEL_LOGS_EXPORTER="console"`.
+
+</details>
