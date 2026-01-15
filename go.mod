@@ -93,3 +93,5 @@ tool (
 	github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
 	golang.org/x/vuln/cmd/govulncheck
 )
+
+retract [v0.0.0-0, v0.6.2]
